@@ -14,7 +14,7 @@ export class Seance {
 
 
     @Column() 
-    date : string; 
+    date : string;  
 
     @Column()
     duration : number ;
@@ -26,7 +26,7 @@ export class Seance {
     prixSeance : number ;
 
     @Column()
-    placeDisponible : number
+    placeDisponible : number 
         
     @ManyToOne(() => Salle, salle => salle.seances)
     salle: Salle;

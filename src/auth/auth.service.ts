@@ -12,8 +12,8 @@ export class AuthService {
         private readonly etudiantService : EtudiantService
     ){}
 
-    signUpProf(createProfDto : CreatProfDto){
-        return this.profService.signUp(createProfDto)
+    async signUpProf(createProfDto : CreatProfDto){
+        return await this.profService.signUp(createProfDto)
     }
 
     signUpEtudiant(createEtudiantDto : CreatEtudiantDto){

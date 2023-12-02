@@ -4,10 +4,5 @@ import { SeanceRepository } from './seance.repository';
 
 @Injectable()
 export class SeanceService {
-
-    constructor(
-        @InjectRepository(SeanceRepository)
-        private seanceRepository : SeanceRepository
-    ){}
 }
- 
+  

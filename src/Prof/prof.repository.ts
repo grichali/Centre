@@ -5,7 +5,7 @@ import { CreatProfDto } from "./dto/create-prof.dto";
 
 @EntityRepository(Prof)
 export class ProfRepository extends Repository<Prof>{
-  signUP(createProfDto: CreatProfDto) {
+  async signUP(createProfDto: CreatProfDto) {
     const {nom, prenom, tel, description, email,password } = createProfDto;
     const prof1 = new Prof()
     console.log('Received values:', nom, prenom, tel, description, email);
@@ -15,9 +15,7 @@ export class ProfRepository extends Repository<Prof>{
     prof1.description = description;
     prof1.email = email;
     prof1.password = password;
-    console.log(prof1)
-    return this.insert(prof1);
+    return await this.save(prof1);
   }
-    
 
 } 

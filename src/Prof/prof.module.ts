@@ -10,10 +10,10 @@ import { SeanceService } from 'src/seance/seance.service';
 import { SeanceRepository } from 'src/seance/seance.repository';
 
 @Module({
-  imports:[TypeOrmModule.forFeature([ProfRepository,Prof]),
+  imports:[TypeOrmModule.forFeature([ProfRepository]),
 ],
-  providers: [ProfService,SeanceService,SeanceRepository],
+  providers: [ProfService],
   controllers: [ProfController]
 }) 
-export class ProfModule {}
+export class ProfModule {} 
  

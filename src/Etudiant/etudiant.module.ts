@@ -11,4 +11,4 @@ import { EtudiantRepository } from './etudiant.repository';
   controllers: [EtudiantController]
 })
 export class EtudiantModule {}
- 
+  

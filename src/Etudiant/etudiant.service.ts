@@ -3,7 +3,7 @@ import { CreatEtudiantDto } from './dto/create-etudiant.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EtudiantRepository } from './etudiant.repository';
 
-@Injectable()
+@Injectable() 
 export class EtudiantService {
 
 
@@ -13,7 +13,7 @@ export class EtudiantService {
       ) {}
 
     signUP(createEtudiantDto: CreatEtudiantDto) {
-        return "samaykom etu ";
+        return this.etudiantRepository.signUp(createEtudiantDto);
     }
 }
   

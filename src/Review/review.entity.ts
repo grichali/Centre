@@ -26,4 +26,4 @@ export class Review {
 
     @ManyToOne(() => Etudiant, etudiant => etudiant.reviews)
     etudiant: Etudiant;
-}
+} 

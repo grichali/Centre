@@ -13,7 +13,7 @@ export class AuthController {
   async signUpProf(
     @Body(ValidationPipe) createProfDto : CreatProfDto
   ): Promise<any> {
-    return this.authService.signUpProf(createProfDto);
+    return await this.authService.signUpProf(createProfDto);
   }
 
   @Post('signup-etudiant')
@@ -23,7 +23,7 @@ export class AuthController {
     return this.authService.signUpEtudiant(createEtudiantDto);
   }
  
-  // @Post('login-prof')
+  // @Post('login-prof') 
   // async loginProf(
   //   @Body(ValidationPipe)  loginDto : LoginDTO
   //   ){ 

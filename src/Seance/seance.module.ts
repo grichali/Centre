@@ -8,11 +8,7 @@ import { ProfService } from 'src/prof/prof.service';
 import { ProfModule } from 'src/prof/prof.module';
 
 @Module({
-  imports:[
-    TypeOrmModule.forFeature([SeanceRepository]),
-    ProfModule
-  ],
-  providers: [SeanceService],
-  controllers: [SeanceController]
+  controllers: [SeanceController],
+  providers: [SeanceService]
 })
-export class SeanceModule {}
+export class SeanceModule {} 

@@ -7,9 +7,12 @@ import { ProfModule } from './prof/prof.module';
 import { EtudiantModule } from './etudiant/etudiant.module';
 import { SeanceModule } from './seance/seance.module';
 import { ReviewModule } from './review/review.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
-  imports:[  TypeOrmModule.forRoot(typeOrmConfig), ProfModule, EtudiantModule, SeanceModule, ReviewModule ],
+  imports:[  TypeOrmModule.forRoot(typeOrmConfig),
+     ProfModule, EtudiantModule,
+      SeanceModule, ReviewModule,AuthModule ],
 
   controllers: [AppController],
   providers: [AppService],

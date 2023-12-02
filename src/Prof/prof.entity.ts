@@ -7,6 +7,7 @@ import { Column, Entity, OneToMany } from "typeorm";
 
 @Entity()
 export class Prof extends User{
+    [x: string]: any;
     @Column()
     description : string ; 
 
@@ -15,4 +16,4 @@ export class Prof extends User{
 
     @OneToMany(() => Seance, seance => seance.prof)
     seances: Seance[];
-}
+}  
