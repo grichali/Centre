@@ -8,12 +8,14 @@ import { EtudiantService } from 'src/etudiant/etudiant.service';
 import { Etudiant } from 'src/etudiant/etudiant.entity';
 import { ProfRepository } from 'src/prof/prof.repository';
 import { EtudiantRepository } from 'src/etudiant/etudiant.repository';
+import { CentreService } from 'src/centre/centre.service';
+import { Centre } from 'src/Centre/centre.entity';
+import { CentreRepository } from 'src/centre/centre.repository';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([Prof,Etudiant]),
-  ],
   controllers: [AuthController],
-  providers: [AuthService , ProfService , EtudiantService, ProfRepository,EtudiantRepository],
+  providers: [AuthService , 
+    ProfService , EtudiantService,CentreService,
+     ProfRepository,EtudiantRepository,CentreRepository],
 })
 export class AuthModule {} 

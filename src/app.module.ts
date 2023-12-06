@@ -8,11 +8,12 @@ import { EtudiantModule } from './etudiant/etudiant.module';
 import { SeanceModule } from './seance/seance.module';
 import { ReviewModule } from './review/review.module';
 import { AuthModule } from './auth/auth.module';
+import { CentreModule } from './centre/centre.module';
 
 @Module({
   imports:[  TypeOrmModule.forRoot(typeOrmConfig),
      ProfModule, EtudiantModule,
-      SeanceModule, ReviewModule,AuthModule ],
+      SeanceModule, ReviewModule,AuthModule, CentreModule ],
 
   controllers: [AppController],
   providers: [AppService],

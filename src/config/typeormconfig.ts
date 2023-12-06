@@ -11,6 +11,7 @@ import { EtudiantFormation } from "src/Etudiant/Reservation/reservation.entity";
 import { Salle } from "src/Salle/salle.entity";
 import { Seance } from "src/Seance/seance.entity";
 import { User } from "src/User/user.entity";
+import { CentreRepository } from "src/centre/centre.repository";
 
 export const typeOrmConfig: TypeOrmModuleOptions = {
   type: 'mysql',
@@ -20,7 +21,7 @@ export const typeOrmConfig: TypeOrmModuleOptions = {
   password: '',
   database: 'salles',
 //  entities: [__dirname + '/../**/*.entity.js'],
- entities: [Centre,Etudiant,Prof,User,EtudiantFormation,Formation,Review,Salle,Seance],
+ entities: [Centre,Etudiant,Prof,User,EtudiantFormation,Formation,Review,Salle,Seance,CentreRepository],
  synchronize: false,
   logging: true,
   autoLoadEntities:true,

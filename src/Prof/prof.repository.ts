@@ -1,10 +1,15 @@
-import { EntityRepository, Repository } from "typeorm";
+import { DataSource, EntityRepository, Repository } from "typeorm";
 import { Prof } from "./prof.entity";
 import { CreatProfDto } from "./dto/create-prof.dto";
+import { Injectable } from "@nestjs/common";
 
 
-@EntityRepository(Prof)
+@Injectable()
 export class ProfRepository extends Repository<Prof>{
+  
+  constructor(private dataSource : DataSource){
+    super(Prof, dataSource.createEntityManager())
+  }
   async signUP(createProfDto: CreatProfDto) {
     const {nom, prenom, tel, description, email,password } = createProfDto;
     const prof1 = new Prof()
@@ -15,6 +20,7 @@ export class ProfRepository extends Repository<Prof>{
     prof1.description = description;
     prof1.email = email;
     prof1.password = password;
+    debugger;
     return await this.save(prof1);
   }
 

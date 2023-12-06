@@ -4,6 +4,7 @@ import { AuthService } from './auth.service';
 import { LoginDTO } from './dto/login.dto';
 import { CreatEtudiantDto } from 'src/etudiant/dto/create-etudiant.dto';
 import { CreatProfDto } from 'src/prof/dto/create-prof.dto';
+import { CreatCentreDto } from 'src/Centre/dto/create-centre.dto';
  
 @Controller('auth')
 export class AuthController {
@@ -20,7 +21,15 @@ export class AuthController {
   async signUpEtudiant(
     @Body(ValidationPipe) createEtudiantDto : CreatEtudiantDto
   ): Promise<any> {
-    return this.authService.signUpEtudiant(createEtudiantDto);
+    return await this.authService.signUpEtudiant(createEtudiantDto);
+  }
+
+
+  @Post('signup-centre')
+  async signUpCentre(
+    @Body(ValidationPipe) createCentretDto : CreatCentreDto
+  ){
+    return await this.authService.signUpCentre(createCentretDto);
   }
  
   // @Post('login-prof') 

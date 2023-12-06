@@ -1,22 +1,25 @@
-// etudiant.repository.ts
-import { EntityRepository, Repository } from 'typeorm';
+import { DataSource, EntityRepository, Repository } from 'typeorm';
 import { Etudiant } from './etudiant.entity';
 import { CreatEtudiantDto } from './dto/create-etudiant.dto';
+import { Injectable } from '@nestjs/common';
 
-@EntityRepository(Etudiant)
+@Injectable()
 export class EtudiantRepository extends Repository<Etudiant> {
-  signUp(createEtudiantDto: CreatEtudiantDto) {
-    const {nom, prenom, tel, niveau, email,password } = createEtudiantDto;
-    const etudiant1 = new Etudiant();
-    console.log(nom,prenom,tel,niveau,email)
-    etudiant1.nom = nom ;
-    etudiant1.prenom = prenom ;
-    etudiant1.tel = tel;
-    etudiant1.niveau = niveau ;
-    etudiant1.email = email ;
-    etudiant1.password = password ;
-    return this.save(etudiant1);
+
+
+  constructor(private dataSource: DataSource) {
+    super(Etudiant, dataSource.createEntityManager());
   }
-
-
-} 
+  
+  async signUp(createEtudiantDto: CreatEtudiantDto) {
+    const { nom, prenom, tel, niveau, email, password } = createEtudiantDto;
+    const etudiant = new Etudiant();
+    etudiant.nom = nom;
+    etudiant.prenom = prenom;
+    etudiant.tel = tel;
+    etudiant.niveau = niveau;
+    etudiant.email = email;
+    etudiant.password = password;
+    return await this.save(etudiant);
+  } 
+}

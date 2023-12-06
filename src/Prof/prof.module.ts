@@ -4,15 +4,12 @@ import { ProfController } from './prof.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ProfRepository } from './prof.repository';
 import { Prof } from './prof.entity';
-import { Seance } from 'src/Seance/seance.entity';
-import { SeanceModule } from 'src/seance/seance.module';
-import { SeanceService } from 'src/seance/seance.service';
-import { SeanceRepository } from 'src/seance/seance.repository';
+
 
 @Module({
-  imports:[TypeOrmModule.forFeature([ProfRepository]),
+  imports:[TypeOrmModule.forFeature([Prof]),
 ],
-  providers: [ProfService],
+  providers: [ProfService,ProfRepository],
   controllers: [ProfController]
 }) 
 export class ProfModule {} 
