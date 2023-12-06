@@ -3,6 +3,7 @@ import { Etudiant } from './etudiant.entity';
 import { CreatEtudiantDto } from './dto/create-etudiant.dto';
 import { Injectable } from '@nestjs/common';
 import { LogInDTO } from 'src/auth/dto/login.dto';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class EtudiantRepository extends Repository<Etudiant> {
@@ -20,7 +21,8 @@ export class EtudiantRepository extends Repository<Etudiant> {
     etudiant.tel = tel;
     etudiant.niveau = niveau;
     etudiant.email = email;
-    etudiant.password = password;
+    etudiant.salt = await bcrypt.genSalt() ;
+    etudiant.password = await bcrypt.hash(password,etudiant.salt);
     return await this.save(etudiant);
   } 
 
@@ -30,7 +32,7 @@ export class EtudiantRepository extends Repository<Etudiant> {
       const etudiant = await this.findOne({
         where : {email}
       })
-      if(etudiant && password === etudiant.password){
+      if(etudiant && etudiant.validatePassword(password)){
         return "Hey " + etudiant.nom;
       }
       else {

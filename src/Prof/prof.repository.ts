@@ -3,6 +3,7 @@ import { Prof } from "./prof.entity";
 import { CreatProfDto } from "./dto/create-prof.dto";
 import { Injectable } from "@nestjs/common";
 import { LogInDTO } from "src/auth/dto/login.dto";
+import * as bcrypt from 'bcrypt';
 
 
 @Injectable()
@@ -20,8 +21,8 @@ export class ProfRepository extends Repository<Prof>{
     prof1.tel = tel;
     prof1.description = description;
     prof1.email = email;
-    prof1.password = password;
-    debugger;
+    prof1.salt = await bcrypt.genSalt() ;
+    prof1.password = await bcrypt.hash(password,prof1.salt);
     return await this.save(prof1);
   }
 
@@ -31,7 +32,7 @@ export class ProfRepository extends Repository<Prof>{
       const prof = await this.findOne({
         where : {email}
       });
-      if(prof && prof.password ===password){
+      if(prof && prof.validatePassword(password)){
         return "hey " + prof.nom
       }
       else {
@@ -42,6 +43,6 @@ export class ProfRepository extends Repository<Prof>{
       throw new Error("Login failed");
     }
     
-  }
+  } 
 
 } 
