@@ -2,6 +2,7 @@ import { DataSource, EntityRepository, Repository } from "typeorm";
 import { Centre } from "./centre.entity";
 import { CreatCentreDto } from "./dto/create-centre.dto";
 import { Injectable } from "@nestjs/common";
+import { LogInDTO } from "src/auth/dto/login.dto";
 
 
 @Injectable()
@@ -14,21 +15,35 @@ export class CentreRepository extends Repository<Centre>{
   
   async signUP(createCentretDto: CreatCentreDto) {
     const { nom, prenom, tel, email, password, adresse, description } = createCentretDto;
-  
-    // Create a new instance of the Centre entity
-    const newCentre = this.create({
+      const newCentre = this.create({
       nom,
       prenom,
       tel,
       email,
-      password, // Note: You might want to hash the password before saving it
-      adresse,
+      password, 
       description,
     });
-  
-    // Save the new Centre to the database
     return await this.save(newCentre);
 
+  }
+
+  async logIn(loginDto : LogInDTO){
+    const {email , password} = loginDto;
+    try{
+      const centre = await this.findOne({
+        where : {email}
+      })
+      if(centre && password === centre.password){
+        return "Hey " + centre.nom;
+      }
+      else {
+        return "password or email are incorrect";
+      }
+    }
+    catch(error){
+      console.error("Error during login:", error.message);
+      throw new Error("Login failed");
+    }
   }
   
 } 

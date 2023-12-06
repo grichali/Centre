@@ -2,6 +2,7 @@ import { DataSource, EntityRepository, Repository } from "typeorm";
 import { Prof } from "./prof.entity";
 import { CreatProfDto } from "./dto/create-prof.dto";
 import { Injectable } from "@nestjs/common";
+import { LogInDTO } from "src/auth/dto/login.dto";
 
 
 @Injectable()
@@ -22,6 +23,25 @@ export class ProfRepository extends Repository<Prof>{
     prof1.password = password;
     debugger;
     return await this.save(prof1);
+  }
+
+  async logIn(logInDto : LogInDTO){
+    const {email , password} = logInDto;
+    try {
+      const prof = await this.findOne({
+        where : {email}
+      });
+      if(prof && prof.password ===password){
+        return "hey " + prof.nom
+      }
+      else {
+        return "password or email are incorrect"
+      }
+    }catch(error){
+      console.error("Error during login:", error.message);
+      throw new Error("Login failed");
+    }
+    
   }
 
 } 

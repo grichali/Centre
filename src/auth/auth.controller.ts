@@ -1,7 +1,7 @@
 // auth.controller.ts
 import { Controller, Post, Body, ValidationPipe } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { LoginDTO } from './dto/login.dto';
+import { LogInDTO } from './dto/login.dto';
 import { CreatEtudiantDto } from 'src/etudiant/dto/create-etudiant.dto';
 import { CreatProfDto } from 'src/prof/dto/create-prof.dto';
 import { CreatCentreDto } from 'src/Centre/dto/create-centre.dto';
@@ -32,22 +32,28 @@ export class AuthController {
     return await this.authService.signUpCentre(createCentretDto);
   }
  
-  // @Post('login-prof') 
-  // async loginProf(
-  //   @Body(ValidationPipe)  loginDto : LoginDTO
-  //   ){ 
-  //     const {email , password } = loginDto ;
-  //   return this.authService.loginProf(email,password);
-  // }
+  @Post('login-prof') 
+  async loginProf(
+    @Body(ValidationPipe)  loginDto : LogInDTO
+    ){ 
+    return this.authService.loginProf(loginDto);
+  }
 
 
-  // @Post('login-etudiant')
-  // async loginEtudiant(
-  //   @Body(ValidationPipe)  loginDto : LoginDTO
-  // ){
-  //   const {email , password } = loginDto ;
-  //   return this.authService.loginEtudiant(email,password);
-  // }
+  @Post('login-etudiant')
+  async loginEtudiant(
+    @Body(ValidationPipe)  loginDto : LogInDTO
+  ){
+    return this.authService.loginEtudiant(loginDto);
+  }
+
+
+  @Post('login-centre')
+  async loginCentre(
+    @Body(ValidationPipe)  loginDto : LogInDTO
+  ){
+    return this.authService.loginCentre(loginDto);
+  }
 
   
 }

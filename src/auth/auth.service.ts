@@ -5,6 +5,7 @@ import { CreatEtudiantDto } from 'src/etudiant/dto/create-etudiant.dto';
 import { EtudiantService } from 'src/etudiant/etudiant.service';
 import { CreatProfDto } from 'src/prof/dto/create-prof.dto';
 import { ProfService } from 'src/prof/prof.service';
+import { LogInDTO } from './dto/login.dto';
 
 @Injectable()
 export class AuthService {
@@ -28,11 +29,16 @@ export class AuthService {
         return await this.centreService.signUp(createCentretDto)
       } 
    
-    // loginProf(email, password){
-    //     return this.profService.login(email,password);
-    // }
+    async loginProf(logInDto : LogInDTO){
+        return await this.profService.logIn(logInDto);
+    }
 
-    // loginEtudiant(email,password){
-    //     return this.etudiantService.login(email,password);
-    // }
+    async loginEtudiant(logInDto : LogInDTO){
+        return await this.etudiantService.logIn(logInDto);
+    }
+
+
+    async loginCentre(logInDto : LogInDTO){
+        return await this.centreService.logIn(logInDto);
+    }
 } 

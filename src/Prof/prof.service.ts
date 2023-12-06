@@ -3,6 +3,7 @@ import { CreatProfDto } from './dto/create-prof.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ProfRepository } from './prof.repository';
 import { Prof } from './prof.entity';
+import { LogInDTO } from 'src/auth/dto/login.dto';
 
 @Injectable()
 export class ProfService {
@@ -13,6 +14,10 @@ export class ProfService {
 
     async signUp(createProfDto: CreatProfDto) {
         return await this.profRepository.signUP(createProfDto);
+    }
+
+    async logIn(logInDto : LogInDTO){
+        return await this.profRepository.logIn(logInDto)
     }
 }
   
