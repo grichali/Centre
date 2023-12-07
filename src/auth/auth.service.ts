@@ -6,6 +6,7 @@ import { EtudiantService } from 'src/etudiant/etudiant.service';
 import { CreatProfDto } from 'src/prof/dto/create-prof.dto';
 import { ProfService } from 'src/prof/prof.service';
 import { LogInDTO } from './dto/login.dto';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
@@ -13,7 +14,7 @@ export class AuthService {
     constructor(
         private readonly profService : ProfService,
         private readonly etudiantService : EtudiantService,
-        private readonly centreService : CentreService
+        private readonly centreService : CentreService,
     ){}
 
     async signUpProf(createProfDto : CreatProfDto){

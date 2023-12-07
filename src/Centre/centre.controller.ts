@@ -1,4 +1,4 @@
-import { Body, Controller, Post, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, ValidationPipe } from '@nestjs/common';
 import { CentreService } from './centre.service';
 import { CreatCentreDto } from './dto/create-centre.dto';
 
@@ -9,9 +9,15 @@ export class CentreController {
 
 
 
-    @Post()
-    signUp(    @Body(ValidationPipe) createCentretDto : CreatCentreDto
+
+    @Get('getsalles/:id')
+    async getSalles(
+        @Param('id') centreId : number 
     ){
-        return this.centreService.signUp(createCentretDto);
+        
+        return this.centreService.getSalles(centreId);
     }
+ 
+
+
 }

@@ -21,6 +21,10 @@ export class CentreService {
 
     async logIn(loginDto : LogInDTO){
       return await this.centreRepository.logIn(loginDto)
-  }
+    }
+
+    async getSalles(centreId : number){
+      return await this.centreRepository.getSalles(centreId);
+    }
   
 }

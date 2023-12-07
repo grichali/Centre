@@ -4,6 +4,7 @@ import { CreatCentreDto } from "./dto/create-centre.dto";
 import { Injectable } from "@nestjs/common";
 import { LogInDTO } from "src/auth/dto/login.dto";
 import * as bcrypt from 'bcrypt';
+import { request } from "http";
 
 
 @Injectable()
@@ -23,6 +24,7 @@ export class CentreRepository extends Repository<Centre>{
     centre.email = email;
     centre.adresse = adresse;
     centre.description = description;
+    centre.salles = []
     centre.salt = await bcrypt.genSalt() ;
     centre.password = await bcrypt.hash(password,centre.salt);
     return await this.save(centre);
@@ -36,7 +38,7 @@ export class CentreRepository extends Repository<Centre>{
         where : {email}
       })
       if(centre && centre.validatePassword(password)){ 
-        return "Hey " + centre.nom;
+        return centre;
       }
       else {
         return "password or email are incorrect";
@@ -47,5 +49,17 @@ export class CentreRepository extends Repository<Centre>{
       throw new Error("Login failed");
     }
   }
+
+
+  async getSalles(centreId: number): Promise<Centre | undefined> {
+    return this.findOne({
+      where: { id: centreId },
+      relations: ['salles'],
+    });
+  }
+
+
   
+
+
 } 

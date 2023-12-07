@@ -10,6 +10,6 @@ import { Centre } from './centre.entity';
     TypeOrmModule.forFeature([Centre]),
   ],
   providers: [CentreService,CentreRepository],
-  controllers: [CentreController]
+  controllers: [CentreController],
 })
 export class CentreModule {}

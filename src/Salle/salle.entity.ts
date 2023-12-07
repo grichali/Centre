@@ -14,8 +14,8 @@ export class Salle {
     prixHeure : number;
 
 
-    @Column()
-    tempsDispo : number;
+    @Column({ type: 'text', default: '[]' })
+    tempDispo: string; 
 
 
     @ManyToOne(() => Centre, centre => centre.salles)

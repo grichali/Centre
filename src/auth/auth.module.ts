@@ -11,10 +11,11 @@ import { EtudiantRepository } from 'src/etudiant/etudiant.repository';
 import { CentreService } from 'src/centre/centre.service';
 import { Centre } from 'src/Centre/centre.entity';
 import { CentreRepository } from 'src/centre/centre.repository';
+import { JwtService } from '@nestjs/jwt';
 
 @Module({
   controllers: [AuthController],
-  providers: [AuthService , 
+  providers: [AuthService ,
     ProfService , EtudiantService,CentreService,
      ProfRepository,EtudiantRepository,CentreRepository],
 })
