@@ -1,4 +1,12 @@
-import { IsOptional, IsNotEmpty, IsNumber, Min, IsArray, ArrayMinSize, ValidateNested } from 'class-validator';
+import {
+  IsOptional,
+  IsNotEmpty,
+  IsNumber,
+  Min,
+  IsArray,
+  ArrayMinSize,
+  ValidateNested,
+} from 'class-validator';
 import { Type } from 'class-transformer';
 
 class ModifyTimeSlotDto {

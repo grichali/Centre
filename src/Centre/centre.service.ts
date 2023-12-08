@@ -7,24 +7,17 @@ import { LogInDTO } from 'src/auth/dto/login.dto';
 
 @Injectable()
 export class CentreService {
+  constructor(private readonly centreRepository: CentreRepository) {}
 
+  async signUp(createCentretDto: CreatCentreDto) {
+    return await this.centreRepository.signUP(createCentretDto);
+  }
 
-    constructor(
-        private readonly centreRepository: CentreRepository,
-      ) {}
+  async logIn(loginDto: LogInDTO) {
+    return await this.centreRepository.logIn(loginDto);
+  }
 
-
-    async signUp(createCentretDto : CreatCentreDto){
-        
-      return await this.centreRepository.signUP(createCentretDto);
-    }
-
-    async logIn(loginDto : LogInDTO){
-      return await this.centreRepository.logIn(loginDto)
-    }
-
-    async getSalles(centreId : number){
-      return await this.centreRepository.getSalles(centreId);
-    }
-  
+  async getSalles(centreId: number) {
+    return await this.centreRepository.getSalles(centreId);
+  }
 }
