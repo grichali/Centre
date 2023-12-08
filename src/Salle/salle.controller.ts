@@ -1,4 +1,4 @@
-import { Body, Controller, Param, Post, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Param, Post, ValidationPipe } from '@nestjs/common';
 import { SalleService } from './salle.service';
 import { CreateSalleDto } from './dto/createsalle.dto';
 import { ModifySalleDto } from './dto/modifysalle.dto';
@@ -25,6 +25,11 @@ export class SalleController {
         @Body(ValidationPipe) modifySalleDto: ModifySalleDto
     ){
         return await this.salleService.modifySalle(salleId,modifySalleDto);
+    }
+
+    @Delete('/delete/:id')
+    async deleteSalle(@Param('id') salleId: number): Promise<void> {
+        await this.salleService.deleteSalle(salleId);
     }
 }
  

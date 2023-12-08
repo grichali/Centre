@@ -99,4 +99,23 @@ export class SalleRepository extends Repository<Salle>{
     }
     
 
+    async deleteSalle(salleId : number ){
+        const salle = await this.findOne({
+            where:{id : salleId}
+        });
+
+        if(!salle){
+            throw new BadRequestException("salle not found !")
+        }
+        try{
+            await this.remove(salle);
+        }
+        catch(error){
+            console.error('Error deleting Salle:', error);
+            throw new BadRequestException('Failed to delete Salle');
+        }
+
+
+    }
+
 }

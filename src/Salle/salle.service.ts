@@ -18,5 +18,11 @@ export class SalleService {
     async modifySalle(salleId: number, modifySalleDto: ModifySalleDto){
         return await this.salleRepository.modifySalle(salleId,modifySalleDto);
     }
+
+    async deleteSalle(salleId : number ){
+        return await this.salleRepository.deleteSalle(salleId);
+    }
+
+    
 }
  

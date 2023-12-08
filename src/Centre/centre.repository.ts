@@ -6,14 +6,12 @@ import { LogInDTO } from "src/auth/dto/login.dto";
 import * as bcrypt from 'bcrypt';
 import { request } from "http";
 
-
 @Injectable()
 export class CentreRepository extends Repository<Centre>{
   
   constructor(private dataSource: DataSource) {
     super(Centre, dataSource.createEntityManager());
   }
-
   
   async signUP(createCentretDto: CreatCentreDto) {
     const { nom, prenom, tel, email, password, adresse, description } = createCentretDto;
@@ -28,7 +26,6 @@ export class CentreRepository extends Repository<Centre>{
     centre.salt = await bcrypt.genSalt() ;
     centre.password = await bcrypt.hash(password,centre.salt);
     return await this.save(centre);
-
   }
 
   async logIn(loginDto : LogInDTO){
