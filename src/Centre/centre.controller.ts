@@ -9,7 +9,7 @@ import {
 import { CentreService } from './centre.service';
 import { CreatCentreDto } from './dto/create-centre.dto';
 
-@Controller('centre')
+@Controller('centre') 
 export class CentreController {
   constructor(private readonly centreService: CentreService) {}
 

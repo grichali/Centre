@@ -36,7 +36,7 @@ export class FormationController {
     );
   }
 
-  @Delete('/delete/:id')
+  @Delete('delete/:id')
   async deleteFormation(@Param('id') formationId: number): Promise<void> {
     await this.formationService.deleteFormation(formationId);
   }

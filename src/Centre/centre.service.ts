@@ -11,7 +11,7 @@ export class CentreService {
 
   async signUp(createCentretDto: CreatCentreDto) {
     return await this.centreRepository.signUP(createCentretDto);
-  }
+  } 
 
   async logIn(loginDto: LogInDTO) {
     return await this.centreRepository.logIn(loginDto);

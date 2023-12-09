@@ -11,14 +11,14 @@ export class Formation {
 
     @Column()
     Type:string ;
- 
-    @Column()
+
+    @Column() 
     prix : number;
 
     @Column()
     description : string;
 
-    @ManyToOne(() => Seance , seance =>seance.formation)
+    @OneToMany(() => Seance , seance =>seance.formation)
     seance : Seance[];
 
 
@@ -28,4 +28,4 @@ export class Formation {
     @ManyToOne(()=>Prof, prof => prof.formations)
     prof : Prof;
 
-} 
+}
