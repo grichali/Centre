@@ -4,11 +4,23 @@ import { SeanceController } from './seance.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { SeanceRepository } from './seance.repository';
 import { Seance } from './seance.entity';
-import { ProfService } from 'src/prof/prof.service';
-import { ProfModule } from 'src/prof/prof.module';
 
+import { ProfRepository } from 'src/Prof/prof.repository';
+import { SalleRepository } from 'src/salle/salle.repository';
+import { CentreModule } from 'src/centre/centre.module';
+import { CentreRepository } from 'src/centre/centre.repository';
+import { FormationModule } from 'src/formation/formation.module';
+import { FormationRepository } from 'src/formation/formation.repository';
 @Module({
+  imports: [TypeOrmModule.forFeature([Seance]), SeanceModule, CentreModule, FormationModule],
   controllers: [SeanceController],
-  providers: [SeanceService]
+  providers: [
+    SeanceService,
+    SeanceRepository,
+    ProfRepository,
+    SalleRepository,
+    CentreRepository,
+    FormationRepository
+  ],
 })
-export class SeanceModule {} 
+export class SeanceModule {}

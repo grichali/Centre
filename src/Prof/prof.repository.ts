@@ -41,7 +41,4 @@ export class ProfRepository extends Repository<Prof> {
     }
   }
 
-
-
-  
 }

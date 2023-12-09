@@ -36,7 +36,7 @@ export class Seance {
   salle: Salle;
 
   @ManyToOne(() => Formation, (formation) => formation.seance)
-  formation: Formation[];
+  formation: Formation;
 
   @ManyToOne(() => Prof, (prof) => prof.seances)
   prof: Prof;

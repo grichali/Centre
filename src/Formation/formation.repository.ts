@@ -45,7 +45,7 @@ export class FormationRepository extends Repository<Formation> {
   ): Promise<Formation> {
     const formation = await this.findOne({
       where: { id: FormationId },
-      relations: ['prof', 'seance'],
+      relations: ['prof', 'seance', 'reviews'],
     });
 
     if (!formation) {
@@ -65,7 +65,6 @@ export class FormationRepository extends Repository<Formation> {
     }
 
     try {
-
       await this.save(formation);
       return formation;
     } catch (error) {
