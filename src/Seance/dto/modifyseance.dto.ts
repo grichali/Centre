@@ -40,7 +40,7 @@ export class ModifySeanceDto {
 
   @IsOptional()
   @IsNotEmpty()
-  @IsNumber()
+  @IsString()
   @Min(0)
   time: string;
 }

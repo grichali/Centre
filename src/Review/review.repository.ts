@@ -25,9 +25,11 @@ export class ReviewRepository extends Repository<Review> {
   ): Promise<Review> {
     const { profRating, centreRating, profReview, centreReview } =    createReviewDto;
 
-    const id = EtudiantId;
+    const id_e = EtudiantId;
     const id_f = FormationId;
-    const etudiant = await this.etudiantRepository.findOne({ where: { id } });
+    const etudiant = await this.etudiantRepository.findOne({
+      where: { id: id_e },
+    });
     if (!etudiant) {
       throw new BadRequestException('Etudiant not found');
     }

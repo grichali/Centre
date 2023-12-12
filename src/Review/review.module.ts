@@ -19,4 +19,4 @@ import { ProfRepository } from 'src/Prof/prof.repository';
     ProfRepository,
   ],
 })
-export class ReviewModule {}
+export class ReviewModule {}

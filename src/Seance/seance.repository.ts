@@ -24,7 +24,15 @@ export class SeanceRepository extends Repository<Seance> {
     ProfId: number,
     SalleId: number,
   ): Promise<Seance> {
-    const { titre, date, time, duration, description, prixSeance, placeDisponible } = createSeanceDto;
+    const {
+      titre,
+      date,
+      time,
+      duration,
+      description,
+      prixSeance,
+      placeDisponible,
+    } = createSeanceDto;
 
     const id = ProfId;
     const id_s = SalleId;
@@ -36,9 +44,16 @@ export class SeanceRepository extends Repository<Seance> {
     if (!salle) {
       throw new BadRequestException('Salle not found');
     }
-    const isSalleAvailable = await this.isSalleAvailable(SalleId, date, time,duration);
+    const isSalleAvailable = await this.isSalleAvailable(
+      SalleId,
+      date,
+      time,
+      duration,
+    );
     if (!isSalleAvailable) {
-      throw new BadRequestException('Salle is not available at the specified date and time.');
+      throw new BadRequestException(
+        'Salle is not available at the specified date and time.',
+      );
     }
 
     const seance = new Seance();
@@ -61,11 +76,16 @@ export class SeanceRepository extends Repository<Seance> {
     }
   }
 
-  async isSalleAvailable(salleId: number, date: string, time: string, duration: number): Promise<boolean> {
+  async isSalleAvailable(
+    salleId: number,
+    date: string,
+    time: string,
+    duration: number,
+  ): Promise<boolean> {
     // Calculate the end time based on the provided time and duration
     const endTime = new Date(`${date}T${time}`);
     endTime.setHours(endTime.getHours() + duration);
-  
+
     // Check if there is any existing seance for the salle during the specified time range
     const existingSeance = await this.findOne({
       where: {
@@ -74,12 +94,15 @@ export class SeanceRepository extends Repository<Seance> {
         time: LessThan(endTime.toISOString()), // Check if the existing seance ends before the new one starts
       },
     });
-  
+
     // If there is an existing seance during the specified time range, salle is not available
     return !existingSeance;
   }
 
-  async modifySeance(seanceId: number, modifySeanceDto: ModifySeanceDto): Promise<Seance> {
+  async modifySeance(
+    seanceId: number,
+    modifySeanceDto: ModifySeanceDto,
+  ): Promise<Seance> {
     const seance = await this.findOneOrFail({
       where: { id: seanceId },
       relations: ['prof', 'formation', 'salle'],
@@ -103,7 +126,7 @@ export class SeanceRepository extends Repository<Seance> {
     if (modifySeanceDto.placeDisponible !== undefined) {
       seance.placeDisponible = modifySeanceDto.placeDisponible;
     }
-    if(modifySeanceDto.time !== undefined){
+    if (modifySeanceDto.time !== undefined) {
       seance.time = modifySeanceDto.time;
     }
 
@@ -131,7 +154,10 @@ export class SeanceRepository extends Repository<Seance> {
     }
   }
 
-  async integreFormation(seanceId: number, formationId: number): Promise<Seance> {
+  async integreFormation(
+    seanceId: number,
+    formationId: number,
+  ): Promise<Seance> {
     const seance = await this.findOne({
       where: { id: seanceId },
       relations: ['prof', 'formation', 'salle'],
