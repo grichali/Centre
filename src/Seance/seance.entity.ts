@@ -32,11 +32,14 @@ export class Seance {
   @Column()
   placeDisponible: number;
 
+  @Column()
+  time: string;
+
   @ManyToOne(() => Salle, (salle) => salle.seances)
   salle: Salle;
 
-  @ManyToOne(() => Formation, (formation) => formation.seance)
-  formation: Formation;
+  @ManyToOne(() => Formation, formation => formation.seance)
+  formation : Formation;
 
   @ManyToOne(() => Prof, (prof) => prof.seances)
   prof: Prof;

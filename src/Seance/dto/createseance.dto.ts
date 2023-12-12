@@ -10,6 +10,10 @@ export class CreateSeanceDto {
   date: string;
 
   @IsNotEmpty()
+  @IsString()
+  time: string;
+
+  @IsNotEmpty()
   @IsNumber()
   @Min(0)
   duration: number;
@@ -27,5 +31,6 @@ export class CreateSeanceDto {
   @IsNumber()
   @Min(0)
   placeDisponible: number;
+
 }
 

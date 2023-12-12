@@ -27,4 +27,8 @@ export class FormationService {
   async deleteFormation(formationId: number) {
     return await this.formationRepository.deleteFormation(formationId);
   }
+
+  async getFormation(formationId: number){
+    return await this.formationRepository.getFormation(formationId);
+  }
 }

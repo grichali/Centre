@@ -39,4 +39,10 @@ export class ModifySeanceDto {
   @IsNumber()
   @Min(0)
   placeDisponible?: number;
+
+  @IsOptional()
+  @IsNotEmpty()
+  @IsNumber()
+  @Min(0)
+  time: string;
 }

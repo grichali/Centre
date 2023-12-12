@@ -12,6 +12,20 @@ export class FormationRepository extends Repository<Formation> {
   ) {
     super(Formation, dataSource.createEntityManager());
   }
+
+  async getFormation(formationId: number): Promise<Formation> {
+    const formation = await this.findOne({
+      where: { id: formationId },
+      relations: ['prof', 'seance', 'reviews'], // Include any additional relations you want to fetch
+    });
+  
+    if (!formation) {
+      throw new BadRequestException('Formation not found');
+    }
+  
+    return formation;
+  }
+  
   async createFormation(
     createFormationDto: CreateFormationDto,
     profId: number,

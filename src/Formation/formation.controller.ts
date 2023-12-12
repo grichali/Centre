@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   Param,
   Post,
   ValidationPipe,
@@ -39,5 +40,12 @@ export class FormationController {
   @Delete('delete/:id')
   async deleteFormation(@Param('id') formationId: number): Promise<void> {
     await this.formationService.deleteFormation(formationId);
+  }
+
+  @Get('get/:id')
+  async getFormation(
+    @Param('id') formationId: number,
+  ){
+    return await this.formationService.getFormation(formationId);
   }
 }

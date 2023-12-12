@@ -18,7 +18,7 @@ export class SalleRepository extends Repository<Salle> {
     createSalleDto: CreateSalleDto,
     centreId: number,
   ): Promise<Salle> {
-    const { nombrePlace, prixHeure, tempDispo } = createSalleDto;
+    const { nombrePlace, prixHeure} = createSalleDto;
 
     const id = centreId;
     const centre = await this.centreRepository.findOne({
@@ -28,12 +28,9 @@ export class SalleRepository extends Repository<Salle> {
       throw new BadRequestException('Centre not found');
     }
 
-    const tempDispoJson = JSON.stringify(tempDispo);
-    console.log(tempDispoJson);
     const salle = new Salle();
     salle.nombrePlace = nombrePlace;
     salle.prixHeure = prixHeure;
-    salle.tempDispo = tempDispoJson;
     salle.centre = centre;
 
     try {
@@ -49,14 +46,10 @@ export class SalleRepository extends Repository<Salle> {
     salleId: number,
     modifySalleDto: ModifySalleDto,
   ): Promise<Salle> {
-    const salle = await this.findOne({
+    const salle = await this.findOneOrFail({
       where: { id: salleId },
       relations: ['centre', 'seances'],
     });
-
-    if (!salle) {
-      throw new BadRequestException('Salle not found');
-    }
 
     if (modifySalleDto.nombrePlace !== undefined) {
       salle.nombrePlace = modifySalleDto.nombrePlace;
@@ -64,30 +57,6 @@ export class SalleRepository extends Repository<Salle> {
 
     if (modifySalleDto.prixHeure !== undefined) {
       salle.prixHeure = modifySalleDto.prixHeure;
-    }
-
-    if (modifySalleDto.tempDispo !== undefined) {
-      // Convert tempDispo JSON string to an array
-      const existingTempDispo = JSON.parse(salle.tempDispo);
-
-      // Iterate through the modified days
-      for (const modifiedDay of modifySalleDto.tempDispo) {
-        // Check if the day already exists in the existing tempDispo
-        const existingDayIndex = existingTempDispo.findIndex(
-          (day) => day.day === modifiedDay.day,
-        );
-
-        if (existingDayIndex !== -1) {
-          // If the day exists, update its time slots
-          existingTempDispo[existingDayIndex].timeSlots = modifiedDay.timeSlots;
-        } else {
-          // If the day doesn't exist, add it to existingTempDispo
-          existingTempDispo.push(modifiedDay);
-        }
-      }
-
-      // Update salle.tempDispo and save to the database
-      salle.tempDispo = JSON.stringify(existingTempDispo);
     }
 
     try {

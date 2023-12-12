@@ -19,12 +19,12 @@ export class Salle {
   @Column()
   prixHeure: number;
 
-  @Column({ type: 'text', default: '[]' })
-  tempDispo: string;
+  @Column()
+  description : string ;
 
   @ManyToOne(() => Centre, (centre) => centre.salles)
   centre: Centre;
 
   @OneToMany(() => Seance, (seance) => seance.salle)
   seances: Seance[];
-}
+} 

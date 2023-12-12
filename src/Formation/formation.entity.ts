@@ -21,7 +21,7 @@ export class Formation {
     @OneToMany(() => Seance , seance =>seance.formation)
     seance : Seance[];
 
-
+    
     @OneToMany(() => Review , review => review.formation)
     reviews : Review[];
 

@@ -1,4 +1,4 @@
-import { Repository } from 'typeorm';
+import { LessThan, Repository } from 'typeorm';
 import { Seance } from './seance.entity';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { DataSource } from 'typeorm';
@@ -14,7 +14,7 @@ export class SeanceRepository extends Repository<Seance> {
     dataSource: DataSource,
     private readonly profRepository: ProfRepository,
     private readonly salleRepository: SalleRepository,
-    private readonly formationRepository?: FormationRepository, // Paramètre optionnel
+    private readonly formationRepository?: FormationRepository,
   ) {
     super(Seance, dataSource.createEntityManager());
   }
@@ -24,12 +24,11 @@ export class SeanceRepository extends Repository<Seance> {
     ProfId: number,
     SalleId: number,
   ): Promise<Seance> {
-    const { titre, date, duration, description, prixSeance, placeDisponible } =
-      createSeanceDto;
+    const { titre, date, time, duration, description, prixSeance, placeDisponible } = createSeanceDto;
 
     const id = ProfId;
     const id_s = SalleId;
-    const prof = await this.profRepository.findOne({ where: { id: id } });
+    const prof = await this.profRepository.findOne({ where: { id } });
     if (!prof) {
       throw new BadRequestException('Prof not found');
     }
@@ -37,10 +36,15 @@ export class SeanceRepository extends Repository<Seance> {
     if (!salle) {
       throw new BadRequestException('Salle not found');
     }
+    const isSalleAvailable = await this.isSalleAvailable(SalleId, date, time,duration);
+    if (!isSalleAvailable) {
+      throw new BadRequestException('Salle is not available at the specified date and time.');
+    }
 
     const seance = new Seance();
     seance.titre = titre;
     seance.date = date;
+    seance.time = time;
     seance.duration = duration;
     seance.description = description;
     seance.prixSeance = prixSeance;
@@ -53,19 +57,34 @@ export class SeanceRepository extends Repository<Seance> {
       return seance;
     } catch (error) {
       console.log('Error creating Seance:', error);
+      throw new BadRequestException('Failed to create Seance');
     }
   }
-  async modifySeance(
-    seanceId: number,
-    modifySeanceDto: ModifySeanceDto,
-  ): Promise<Seance> {
-    const seance = await this.findOne({
+
+  async isSalleAvailable(salleId: number, date: string, time: string, duration: number): Promise<boolean> {
+    // Calculate the end time based on the provided time and duration
+    const endTime = new Date(`${date}T${time}`);
+    endTime.setHours(endTime.getHours() + duration);
+  
+    // Check if there is any existing seance for the salle during the specified time range
+    const existingSeance = await this.findOne({
+      where: {
+        salle: { id: salleId },
+        date: date,
+        time: LessThan(endTime.toISOString()), // Check if the existing seance ends before the new one starts
+      },
+    });
+  
+    // If there is an existing seance during the specified time range, salle is not available
+    return !existingSeance;
+  }
+
+  async modifySeance(seanceId: number, modifySeanceDto: ModifySeanceDto): Promise<Seance> {
+    const seance = await this.findOneOrFail({
       where: { id: seanceId },
       relations: ['prof', 'formation', 'salle'],
     });
-    if (!seance) {
-      throw new BadRequestException('Seance not found');
-    }
+
     if (modifySeanceDto.titre !== undefined) {
       seance.titre = modifySeanceDto.titre;
     }
@@ -84,6 +103,10 @@ export class SeanceRepository extends Repository<Seance> {
     if (modifySeanceDto.placeDisponible !== undefined) {
       seance.placeDisponible = modifySeanceDto.placeDisponible;
     }
+    if(modifySeanceDto.time !== undefined){
+      seance.time = modifySeanceDto.time;
+    }
+
     try {
       await this.save(seance);
       return seance;
@@ -92,12 +115,14 @@ export class SeanceRepository extends Repository<Seance> {
       throw new BadRequestException('Failed to modify Seance');
     }
   }
+
   async deleteSeance(seanceId: number) {
     const seance = await this.findOne({ where: { id: seanceId } });
 
     if (!seance) {
       throw new BadRequestException('Seance not found !');
     }
+
     try {
       await this.remove(seance);
     } catch (error) {
@@ -105,10 +130,8 @@ export class SeanceRepository extends Repository<Seance> {
       throw new BadRequestException('Failed to delete Seance');
     }
   }
-  async integreFormation(
-    seanceId: number,
-    formationId: number,
-  ): Promise<Seance> {
+
+  async integreFormation(seanceId: number, formationId: number): Promise<Seance> {
     const seance = await this.findOne({
       where: { id: seanceId },
       relations: ['prof', 'formation', 'salle'],
@@ -127,9 +150,9 @@ export class SeanceRepository extends Repository<Seance> {
     }
 
     try {
-      seance.formation = formation; // Assigne la formation à la séance
-      await this.save(seance); // Sauvegarde la séance mise à jour avec la nouvelle formation
-      return seance; // Retourne la séance modifiée
+      seance.formation = formation;
+      await this.save(seance);
+      return seance;
     } catch (error) {
       console.error('Error integrating Formation:', error);
       throw new BadRequestException('Failed to integrate Formation');

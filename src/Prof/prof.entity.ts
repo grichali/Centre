@@ -15,5 +15,5 @@ export class Prof extends User{
     formations : Formation[];
 
     @OneToMany(() => Seance, seance => seance.prof)
-    seances: Seance[];
+    seances: Seance[]; 
 }  
