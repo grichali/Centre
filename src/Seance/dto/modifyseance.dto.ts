@@ -8,12 +8,10 @@ import {
 
 export class ModifySeanceDto {
   @IsOptional()
-  @IsNotEmpty()
   @IsString()
   titre?: string;
 
   @IsOptional()
-  @IsNotEmpty()
   @IsString()
   date?: string;
 

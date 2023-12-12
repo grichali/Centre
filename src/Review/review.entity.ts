@@ -1,29 +1,33 @@
-import { Etudiant } from "src/Etudiant/etudiant.entity";
-import { Formation } from "src/Formation/formation.entity";
-import { Column, Entity, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Etudiant } from 'src/Etudiant/etudiant.entity';
+import { Formation } from 'src/Formation/formation.entity';
+import {
+  Column,
+  Entity,
+  ManyToMany,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
-
 export class Review {
-    @PrimaryGeneratedColumn()
-    id : number ;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column()
-    profRating : number ;
+  @Column()
+  profRating: number;
 
-    @Column()
-    centreRating : number;
+  @Column()
+  centreRating: number;
 
-    @Column()
-    profReview :string
+  @Column()
+  profReview: string;
 
+  @Column()
+  centreReview: string;
 
-    @Column()
-    centreReview :string
+  @ManyToOne(() => Formation, (formation) => formation.reviews)
+  formation: Formation;
 
-    @ManyToOne(()=>Formation , formation => formation.reviews)
-    formation : Formation;
-
-    @ManyToOne(() => Etudiant, etudiant => etudiant.reviews)
-    etudiant: Etudiant;
-} 
+  @ManyToOne(() => Etudiant, (etudiant) => etudiant.reviews)
+  etudiant: Etudiant;
+}
