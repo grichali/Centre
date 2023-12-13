@@ -12,6 +12,7 @@ import { Salle } from 'src/Salle/salle.entity';
 import { Seance } from 'src/Seance/seance.entity';
 import { User } from 'src/User/user.entity';
 import { CentreRepository } from 'src/centre/centre.repository';
+import { Admin } from 'src/admin/entities/admin.entity';
 
 export const typeOrmConfig: TypeOrmModuleOptions = {
   type: 'mysql',
@@ -31,6 +32,7 @@ export const typeOrmConfig: TypeOrmModuleOptions = {
     Review,
     Salle,
     Seance,
+    Admin,
     CentreRepository,
   ],
   synchronize: true,

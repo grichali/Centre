@@ -12,11 +12,12 @@ import { CentreModule } from './centre/centre.module';
 import { SalleModule } from './salle/salle.module';
 import { FormationModule } from './formation/formation.module';
 import { ReservationModule } from './Etudiant/Reservation/reservation.module';
+import { AdminModule } from './admin/admin.module';
 
 @Module({
   imports:[  TypeOrmModule.forRoot(typeOrmConfig),
      ProfModule, EtudiantModule,
-      SeanceModule, ReviewModule,AuthModule, CentreModule, SalleModule, FormationModule, ReservationModule ],
+      SeanceModule, ReviewModule,AuthModule, CentreModule, SalleModule, FormationModule, ReservationModule, AdminModule ],
 
   controllers: [AppController],
   providers: [AppService],
