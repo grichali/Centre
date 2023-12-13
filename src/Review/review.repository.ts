@@ -9,6 +9,7 @@ import { FormationRepository } from 'src/formation/formation.repository';
 
 @Injectable()
 export class ReviewRepository extends Repository<Review> {
+  
   constructor(
     dataSource: DataSource,
     private readonly etudiantRepository: EtudiantRepository,
@@ -22,8 +23,7 @@ export class ReviewRepository extends Repository<Review> {
     EtudiantId: number,
     FormationId: number,
   ): Promise<Review> {
-    const { profRating, centreRating, profReview, centreReview } =
-      createReviewDto;
+    const { profRating, centreRating, profReview, centreReview } =    createReviewDto;
 
     const id = EtudiantId;
     const id_f = FormationId;

@@ -9,10 +9,11 @@ import { EtudiantRepository } from 'src/etudiant/etudiant.repository';
 import { ProfRepository } from 'src/Prof/prof.repository';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Review, ReviewRepository])],
+  imports: [TypeOrmModule.forFeature([Review])],
   controllers: [ReviewController],
   providers: [
     ReviewService,
+    ReviewRepository,
     FormationRepository,
     EtudiantRepository,
     ProfRepository,
