@@ -12,7 +12,7 @@ import { ProfRepository } from 'src/Prof/prof.repository';
 import { Prof } from 'src/Prof/prof.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([EtudiantFormation, FormationRepository])],
+  imports: [TypeOrmModule.forFeature([EtudiantFormation])],
   providers: [
     ReservationService,
     ReservationRepository,

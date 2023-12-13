@@ -6,8 +6,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ProfRepository } from 'src/Prof/prof.repository';
 import { FormationRepository } from './formation.repository';
 
+
+
+
 @Module({
-  imports: [TypeOrmModule.forFeature([Formation, FormationRepository])],
+  imports: [TypeOrmModule.forFeature([Formation])],
   controllers: [FormationController],
   providers: [FormationService, FormationRepository, ProfRepository],
 })

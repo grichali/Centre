@@ -9,19 +9,9 @@ import { PassportModule } from '@nestjs/passport';
 
 
 @Module({
-  imports:[TypeOrmModule.forFeature([Prof]),
-  PassportModule.register({
-    defaultStrategy:'jwt'
-  }),
-  JwtModule.register({
-    secret: 'hey123@@',
-    signOptions:{
-      expiresIn : 3600,
-    }
-  })
-],
+  imports:[TypeOrmModule.forFeature([Prof])],
   providers: [ProfService,ProfRepository],
-  controllers: [ProfController]
+  controllers: [ProfController],
 }) 
 export class ProfModule {} 
   

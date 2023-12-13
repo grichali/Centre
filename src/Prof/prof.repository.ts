@@ -7,9 +7,13 @@ import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class ProfRepository extends Repository<Prof> {
+
+
   constructor(private dataSource: DataSource) {
     super(Prof, dataSource.createEntityManager());
   }
+
+  
   async signUP(createProfDto: CreatProfDto) {
     const { nom, prenom, tel, description, email, password } = createProfDto;
     const prof1 = new Prof();
