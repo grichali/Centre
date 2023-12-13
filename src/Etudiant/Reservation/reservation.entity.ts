@@ -5,7 +5,7 @@ import { Formation } from 'src/Formation/formation.entity';
 @Entity({ name: 'reservation' })
 export class EtudiantFormation {
 
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn()
   id:number ;
 
   
@@ -17,6 +17,4 @@ export class EtudiantFormation {
   @JoinColumn({ name: 'formationId' })
   formation: Formation;
 
-  @Column({ name: 'numberOfSeance' })
-  numberOfSeance: number;
 }

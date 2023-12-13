@@ -4,19 +4,22 @@ import { Formation } from './formation.entity';
 import { CreateFormationDto } from './dto/createformation.dto';
 import { ProfRepository } from 'src/Prof/prof.repository';
 import { ModifyFormationDto } from './dto/modifyformation.dto';
+
+
+
 @Injectable()
 export class FormationRepository extends Repository<Formation> {
   constructor(
     dataSource: DataSource,
     private readonly profRepository: ProfRepository,
-  ) {
+  ) { 
     super(Formation, dataSource.createEntityManager());
   }
 
   async getFormation(formationId: number): Promise<Formation> {
     const formation = await this.findOne({
       where: { id: formationId },
-      relations: ['prof', 'seance', 'reviews'], // Include any additional relations you want to fetch
+      relations: ['prof', 'seance', 'reviews'], // Include relations 
     });
   
     if (!formation) {

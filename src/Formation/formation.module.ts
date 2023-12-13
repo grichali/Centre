@@ -7,7 +7,7 @@ import { ProfRepository } from 'src/Prof/prof.repository';
 import { FormationRepository } from './formation.repository';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Formation]), FormationModule],
+  imports: [TypeOrmModule.forFeature([Formation,FormationRepository])],
   controllers: [FormationController],
   providers: [FormationService, FormationRepository, ProfRepository],
 })

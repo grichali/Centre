@@ -13,7 +13,7 @@ export class FormationService {
       id,
     );
   }
-
+ 
   async modifyFormation(
     formationId: number,
     modifyFormationDto: ModifyFormationDto,
