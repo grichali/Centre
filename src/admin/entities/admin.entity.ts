@@ -1,5 +1,6 @@
 import { User } from 'src/User/user.entity';
-import { Column, Entity } from 'typeorm';
+import { Entity, Column } from 'typeorm';
+import { IsNotEmpty, IsString, IsNumber } from 'class-validator';
 
 @Entity()
 export class Admin extends User {
@@ -12,3 +13,4 @@ export class Admin extends User {
   @Column()
   permission: string;
 }
+

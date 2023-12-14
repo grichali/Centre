@@ -25,14 +25,16 @@ export class AuthController {
     return await this.authService.signUpEtudiant(createEtudiantDto);
   }
 
+  @Post('signup-admin')
+  async signUpAdmin(
+    @Body(ValidationPipe) createAdmintDto: CreateAdminDto,
+  ): Promise<any> {
+    return await this.authService.signUpAdmin(createAdmintDto);
+  }
+
   @Post('signup-centre')
   async signUpCentre(@Body(ValidationPipe) createCentretDto: CreatCentreDto) {
     return await this.authService.signUpCentre(createCentretDto);
-  }
-
-  @Post('signup-admin')
-  async signUpAdmin(@Body(ValidationPipe) createAdmintDto: CreateAdminDto) {
-    return await this.authService.signUpAdmin(createAdmintDto);
   }
 
   @Post('login-prof')
