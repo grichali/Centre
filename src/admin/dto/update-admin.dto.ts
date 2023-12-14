@@ -1,25 +1,27 @@
 import {
-  IsOptional,
   IsNotEmpty,
   IsNumber,
-  Min,
+  IsOptional,
   IsString,
+  Max,
+  Min,
 } from 'class-validator';
 
-export class ModifyFormationDto {
-  @IsOptional()
-  @IsNotEmpty()
-  @IsString()
-  Type?: string;
-
+export class UpdateAdminDto  {
   @IsOptional()
   @IsNotEmpty()
   @IsNumber()
   @Min(0)
-  prix?: number;
+  @Max(3)
+  acces_level?: number;
 
   @IsOptional()
   @IsNotEmpty()
   @IsString()
-  description?: string;
+  role?: string;
+
+  @IsOptional()
+  @IsNotEmpty()
+  @IsString()
+  permission?: string;
 }
