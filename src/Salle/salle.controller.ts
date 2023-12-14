@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   Param,
   Post,
   ValidationPipe,
@@ -33,5 +34,11 @@ export class SalleController {
   @Delete('/delete/:id')
   async deleteSalle(@Param('id') salleId: number): Promise<void> {
     await this.salleService.deleteSalle(salleId);
+  }
+
+  @Get('getall/:id')
+  async getCentreSalles(
+    @Param('/id')centreId : number ){
+      return await this.salleService.getCentreSalles(centreId);
   }
 }

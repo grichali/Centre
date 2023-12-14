@@ -5,6 +5,7 @@ import { Injectable } from "@nestjs/common";
 import { LogInDTO } from "src/auth/dto/login.dto";
 import * as bcrypt from 'bcrypt';
 import { request } from "http";
+import { error } from "console";
 
 @Injectable()
 export class CentreRepository extends Repository<Centre>{
@@ -53,6 +54,47 @@ export class CentreRepository extends Repository<Centre>{
       where: { id: centreId },
       relations: ['salles'],
     });
+  }
+
+  async getCentre(centreId : number ){
+    try{
+      return await this.find({
+        where : { id : centreId},
+        relations : ['salles',
+        'salles.seances',
+        'salles.seances.formation',
+      'salles.seances.formation.reviews'],
+        select:{
+        "id": true,
+        "nom": true,
+        "prenom": true,
+        "adresse": true,
+        "description": true,
+        salles:{
+          "id": true,
+          "nombrePlace": true,
+          "prixHeure": true,
+          "description": true,
+          seances:{
+            id : true,
+            formation:{
+              "id": true,
+              "Type": true,
+              "prix": true,
+              "description": true,
+              reviews:{
+                centreRating : true, 
+                centreReview : true
+              }
+            }
+          }
+        }
+        }
+      })
+    }catch(error){
+      throw new Error('an error occured while getting centre information');
+
+    }
   }
 
 

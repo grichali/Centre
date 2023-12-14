@@ -20,4 +20,8 @@ export class CentreService {
   async getSalles(centreId: number) {
     return await this.centreRepository.getSalles(centreId);
   }
+
+  async getCentre(centreId : number ){
+    return await this.centreRepository.getCentre(centreId);
+  }
 }

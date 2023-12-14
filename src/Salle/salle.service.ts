@@ -18,4 +18,8 @@ export class SalleService {
   async deleteSalle(salleId: number) {
     return await this.salleRepository.deleteSalle(salleId);
   }
+
+  async getCentreSalles(centreId : number ){
+    return await this.salleRepository.getCentreSalles(centreId);
+  }
 }

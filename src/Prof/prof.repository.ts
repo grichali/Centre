@@ -13,6 +13,33 @@ export class ProfRepository extends Repository<Prof> {
     super(Prof, dataSource.createEntityManager());
   }
 
+
+  async getProf(profId : number){
+    try{
+      return await this.findOne({
+        where : {id : profId},
+        relations: ['formations', 'formations.reviews'],
+        select:{
+          id : true ,
+          "nom": true,
+          "prenom": true,
+          "description": true,
+          formations:{
+            "id": true,
+            "Type": true,
+            "prix": true,
+            "description": true,
+            reviews : {
+              profReview : true,
+              profRating : true
+            }
+          }
+        } 
+      })
+    }catch(error){
+      throw new Error('an error occured while getting prof information');
+    }
+  }
   
   async signUP(createProfDto: CreatProfDto) {
     const { nom, prenom, tel, description, email, password } = createProfDto;

@@ -4,6 +4,7 @@ import { Formation } from './formation.entity';
 import { CreateFormationDto } from './dto/createformation.dto';
 import { ProfRepository } from 'src/Prof/prof.repository';
 import { ModifyFormationDto } from './dto/modifyformation.dto';
+import { Seance } from 'src/Seance/seance.entity';
  
 
 
@@ -89,6 +90,8 @@ export class FormationRepository extends Repository<Formation> {
       throw new BadRequestException('Failed to modify Formation');
     }
   }
+
+
   async deleteFormation(formationId: number) {
     const formation = await this.findOne({
       where: { id: formationId },
@@ -103,5 +106,45 @@ export class FormationRepository extends Repository<Formation> {
       console.error('Error deleting Formation:', error);
       throw new BadRequestException('Failed to delete Formation');
     }
+  }
+
+
+  async getAll(){
+    return await this.find({
+      relations : ['prof','seance','seance.salle','seance.salle.centre'],
+      // filtring what data to return 
+      select : {
+        id : true,
+        Type : true,
+        prix : true,
+        description : true,
+        prof:{
+          id : true,
+          nom: true ,
+          prenom: true ,
+          description: true
+        },
+        seance:{
+          id : true,
+          titre : true,
+          date : true,
+          time : true,
+          duration : true,
+          description : true,
+          placeDisponible : true,
+          salle : {
+            id : true,
+            description : true,
+            centre : {
+              id : true ,
+              nom : true,
+              prenom : true,
+              adresse : true,
+              description : true ,
+            }
+          }
+        },
+      }
+    });
   }
 }

@@ -19,5 +19,9 @@ export class ProfService {
     async logIn(logInDto : LogInDTO){
         return await this.profRepository.logIn(logInDto)
     }
+
+    async getProf(id : number ){
+        return await this.profRepository.getProf(id);
+    }
 }
   

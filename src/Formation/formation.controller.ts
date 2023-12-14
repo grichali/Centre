@@ -10,6 +10,7 @@ import {
 import { FormationService } from './formation.service';
 import { CreateFormationDto } from './dto/createformation.dto';
 import { ModifyFormationDto } from './dto/modifyformation.dto';
+import { get } from 'http';
 
 @Controller('formation')
 export class FormationController {
@@ -47,5 +48,10 @@ export class FormationController {
     @Param('id') formationId: number,
   ){
     return await this.formationService.getFormation(formationId);
+  }
+
+  @Get('getall')
+  async getAll(){
+    return await this.formationService.getAll();
   }
 }

@@ -33,4 +33,27 @@ export class ReservationRepository extends Repository<EtudiantFormation> {
       throw new BadRequestException('Failed to create reservation');
     }
   }
+
+  async deleteReservation(resId : number){
+    try{
+    //   const reservation = await this.find({
+    //     where : {id : resId}
+    //   })
+
+      await this.delete(resId);
+      return "reservation has been deleted succesfully";
+    }catch(error){
+      throw new BadRequestException('Failed to delete reservation');
+
+    }
+  }
+
+  async getEtudiantReservations(etudiantd : number){
+    const etudiant = await this.etudiantRepository.findOneOrFail({
+      where: { id: etudiantd },
+    });
+    return await this.find({
+      where: { etudiant: { id: etudiantd } },
+    })
+  }
 }

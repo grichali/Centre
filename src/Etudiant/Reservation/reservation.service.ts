@@ -20,5 +20,13 @@ export class ReservationService {
           throw new BadRequestException('Failed to create reservation');
         }
       }
+
+      async getEtudiantReservations(etudiantId : number ){
+        return await this.reservationRepository.getEtudiantReservations(etudiantId);
+      }
+
+      async deleteReservation(resId:number){
+        return await this.reservationRepository.deleteReservation(resId);
+      }
 } 
    

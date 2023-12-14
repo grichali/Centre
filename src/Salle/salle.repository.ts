@@ -84,4 +84,13 @@ export class SalleRepository extends Repository<Salle> {
       throw new BadRequestException('Failed to delete Salle');
     }
   }
+
+  async getCentreSalles(centreId : number){
+
+    const centre = await this.centreRepository.findOne({
+      where : {id : centreId}
+    })
+    //probb
+    return "hhh"
+  }
 }

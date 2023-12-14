@@ -31,4 +31,8 @@ export class FormationService {
   async getFormation(formationId: number){
     return await this.formationRepository.getFormation(formationId);
   }
+
+  async getAll(){
+    return await this.formationRepository.getAll();
+  }
 }

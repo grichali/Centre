@@ -17,4 +17,11 @@ export class CentreController {
   async getSalles(@Param('id') centreId: number) {
     return this.centreService.getSalles(centreId);
   }
+
+  @Get('getcentre/:id')
+  async getCentre(
+    @Param('/:id') centreId : number 
+  ){
+    return this.centreService.getCentre(centreId);
+  }
 }
