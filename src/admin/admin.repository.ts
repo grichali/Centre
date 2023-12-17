@@ -33,9 +33,7 @@ export class AdminRepository extends Repository<Admin> {
         where: { email },
       });
       if (admin && admin.validatePassword(password)) {
-        return 'Hey ' + admin.role + admin.nom;
-      } else {
-        return 'password or email are incorrect';
+        return admin;
       }
     } catch (error) {
       console.error('Error during login:', error.message);

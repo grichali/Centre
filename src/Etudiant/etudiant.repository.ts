@@ -1,7 +1,7 @@
 import { DataSource, EntityRepository, Repository } from 'typeorm';
 import { Etudiant } from './etudiant.entity';
 import { CreatEtudiantDto } from './dto/create-etudiant.dto';
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { LogInDTO } from 'src/auth/dto/login.dto';
 import * as bcrypt from 'bcrypt';
 
@@ -26,22 +26,32 @@ export class EtudiantRepository extends Repository<Etudiant> {
     return await this.save(etudiant);
   } 
 
-  async logIn(loginDto : LogInDTO){
-    const {email , password} = loginDto;
-    try{
+
+  async logIn(loginDto: LogInDTO) {
+    const { email, password } = loginDto;
+    try {
       const etudiant = await this.findOne({
-        where : {email}
-      })
-      if(etudiant && etudiant.validatePassword(password)){
-        return "Hey " + etudiant.nom;
+        where: { email },
+      });
+  
+      if (!etudiant) {
+        throw new UnauthorizedException('Etudiant with this email does not exist');
       }
-      else {
-        return "password or email are incorrect";
+  
+      const isPasswordValid = await etudiant.validatePassword(password);
+  
+      if (!isPasswordValid) {
+        throw new UnauthorizedException('Invalid password');
       }
-    }
-    catch(error){
-      console.error("Error during login:", error.message);
-      throw new Error("Login failed");
+  
+      return etudiant;
+    } catch (error) {
+      if (error instanceof UnauthorizedException) {
+        throw new UnauthorizedException(error.message); // Propagate the specific error message
+      }
+  
+      console.error('Error during login:', error.message);
+      throw new Error('Login failed');
     }
   }
 }

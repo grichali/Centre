@@ -1,7 +1,7 @@
 import { DataSource, EntityRepository, Repository } from "typeorm";
 import { Centre } from "./centre.entity";
 import { CreatCentreDto } from "./dto/create-centre.dto";
-import { Injectable } from "@nestjs/common";
+import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { LogInDTO } from "src/auth/dto/login.dto";
 import * as bcrypt from 'bcrypt';
 import { request } from "http";
@@ -29,25 +29,33 @@ export class CentreRepository extends Repository<Centre>{
     return await this.save(centre);
   }
 
-  async logIn(loginDto : LogInDTO){
-    const {email , password} = loginDto;
-    try{
+  async logIn(loginDto: LogInDTO) {
+    const { email, password } = loginDto;
+    try {
       const centre = await this.findOne({
-        where : {email}
-      })
-      if(centre && centre.validatePassword(password)){ 
-        return centre;
+        where: { email },
+      });
+  
+      if (!centre) {
+        throw new UnauthorizedException('Centre with this email does not exist');
       }
-      else {
-        return "password or email are incorrect";
+  
+      const isPasswordValid = await centre.validatePassword(password);
+  
+      if (!isPasswordValid) {
+        throw new UnauthorizedException('Invalid password');
       }
-    }
-    catch(error){
-      console.error("Error during login:", error.message);
-      throw new Error("Login failed");
+  
+      return centre;
+    } catch (error) {
+      if (error instanceof UnauthorizedException) {
+        throw new UnauthorizedException(error.message); // Propagate the specific error message
+      }
+  
+      console.error('Error during login:', error.message);
+      throw new Error('Login failed');
     }
   }
-
 
   async getSalles(centreId: number): Promise<Centre | undefined> {
     return this.findOne({

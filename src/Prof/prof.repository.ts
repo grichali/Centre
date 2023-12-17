@@ -1,7 +1,7 @@
 import { DataSource, EntityRepository, Repository } from 'typeorm';
 import { Prof } from './prof.entity';
 import { CreatProfDto } from './dto/create-prof.dto';
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { LogInDTO } from 'src/auth/dto/login.dto';
 import * as bcrypt from 'bcrypt';
 
@@ -61,12 +61,23 @@ export class ProfRepository extends Repository<Prof> {
       const prof = await this.findOne({
         where: { email },
       });
-      if (prof && prof.validatePassword(password)) {
-        return 'hey ' + prof.nom;
-      } else {
-        return 'password or email are incorrect';
+  
+      if (!prof) {
+        throw new UnauthorizedException('User with this email does not exist');
       }
+  
+      const isPasswordValid = await prof.validatePassword(password);
+  
+      if (!isPasswordValid) {
+        throw new UnauthorizedException('Invalid password');
+      }
+  
+      return prof;
     } catch (error) {
+      if (error instanceof UnauthorizedException) {
+        throw new UnauthorizedException(error.message); // Propagate the specific error message
+      }
+  
       console.error('Error during login:', error.message);
       throw new Error('Login failed');
     }
