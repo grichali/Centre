@@ -7,21 +7,21 @@ import { LogInDTO } from 'src/auth/dto/login.dto';
 
 @Injectable()
 export class ProfService {
+  constructor(private readonly profRepository: ProfRepository) {}
 
-    constructor(
-        private readonly profRepository: ProfRepository,
-      ) {} 
+  async signUp(createProfDto: CreatProfDto) {
+    return await this.profRepository.signUP(createProfDto);
+  }
 
-    async signUp(createProfDto: CreatProfDto) {
-        return await this.profRepository.signUP(createProfDto);
-    }
+  async logIn(logInDto: LogInDTO) {
+    return await this.profRepository.logIn(logInDto);
+  }
 
-    async logIn(logInDto : LogInDTO){
-        return await this.profRepository.logIn(logInDto)
-    }
+  async getProf(id: number) {
+    return await this.profRepository.getProf(id);
+  }
 
-    async getProf(id : number ){
-        return await this.profRepository.getProf(id);
-    }
+  async DeleteProf(Id: number) {
+    return await this.profRepository.DeleteProf(Id);
+  }
 }
-  

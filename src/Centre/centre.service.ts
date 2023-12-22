@@ -11,7 +11,7 @@ export class CentreService {
 
   async signUp(createCentretDto: CreatCentreDto) {
     return await this.centreRepository.signUP(createCentretDto);
-  } 
+  }
 
   async logIn(loginDto: LogInDTO) {
     return await this.centreRepository.logIn(loginDto);
@@ -21,7 +21,10 @@ export class CentreService {
     return await this.centreRepository.getSalles(centreId);
   }
 
-  async getCentre(centreId : number ){
-    return await this.centreRepository.getCentre(centreId);
+  async getCentre(id: number) {
+    return await this.centreRepository.getCentre(id);
   }
+  async DeleteCentre(id: number) {
+    return await this.centreRepository.DeleteCentre(id);
+}
 }

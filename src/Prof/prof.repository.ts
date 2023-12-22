@@ -1,7 +1,8 @@
+/* eslint-disable prettier/prettier */
 import { DataSource, EntityRepository, Repository } from 'typeorm';
 import { Prof } from './prof.entity';
 import { CreatProfDto } from './dto/create-prof.dto';
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { LogInDTO } from 'src/auth/dto/login.dto';
 import * as bcrypt from 'bcrypt';
 
@@ -34,13 +35,13 @@ export class ProfRepository extends Repository<Prof> {
               profRating : true
             }
           }
-        } 
+        }
       })
     }catch(error){
       throw new Error('an error occured while getting prof information');
     }
   }
-  
+
   async signUP(createProfDto: CreatProfDto) {
     const { nom, prenom, tel, description, email, password } = createProfDto;
     const prof1 = new Prof();
@@ -61,26 +62,46 @@ export class ProfRepository extends Repository<Prof> {
       const prof = await this.findOne({
         where: { email },
       });
-  
+
       if (!prof) {
         throw new UnauthorizedException('User with this email does not exist');
       }
-  
+
       const isPasswordValid = await prof.validatePassword(password);
-  
+
       if (!isPasswordValid) {
         throw new UnauthorizedException('Invalid password');
       }
-  
+
       return prof;
     } catch (error) {
       if (error instanceof UnauthorizedException) {
         throw new UnauthorizedException(error.message); // Propagate the specific error message
       }
-  
+
       console.error('Error during login:', error.message);
       throw new Error('Login failed');
     }
   }
+
+  async DeleteProf(profId: number) {
+    const prof = await this.findOne({
+      where: { id: profId },
+      relations: ['formations', 'seances'], 
+    });
+
+    if (!prof) {
+      throw new BadRequestException(`Prof with ID ${profId} does not exist.`);
+    }
+
+    try {
+      await this.remove(prof);
+      return { message: `Prof with ID ${profId} and associated formations and seances have been deleted successfully.` };
+    } catch (error) {
+      console.error('Error during deletion:', error.message);
+      throw new Error('Failed to delete Prof.');
+    }
+  }
+
 
 }

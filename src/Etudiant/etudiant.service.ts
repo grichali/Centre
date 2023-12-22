@@ -6,18 +6,17 @@ import { LogInDTO } from 'src/auth/dto/login.dto';
 
 @Injectable({ scope: Scope.REQUEST })
 export class EtudiantService {
+  constructor(private etudiantRepository: EtudiantRepository) {}
 
+  async signUP(createEtudiantDto: CreatEtudiantDto) {
+    return await this.etudiantRepository.signUp(createEtudiantDto);
+  }
 
-    constructor(
-        private etudiantRepository: EtudiantRepository,
-      ) {}
+  async logIn(loginDto: LogInDTO) {
+    return await this.etudiantRepository.logIn(loginDto);
+  }
 
-    async signUP(createEtudiantDto: CreatEtudiantDto) {
-        return await this.etudiantRepository.signUp(createEtudiantDto);
-    }
-
-    async logIn(loginDto : LogInDTO){
-        return await this.etudiantRepository.logIn(loginDto)
-    }
+  async DeleteEtudiant(etudiantId: number) {
+    return await this.etudiantRepository.DeleteEtudiant(etudiantId);
+  }
 }
-   

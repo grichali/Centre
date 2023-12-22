@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { CreatCentreDto } from 'src/Centre/dto/create-centre.dto';
 import { CentreService } from 'src/centre/centre.service';
@@ -17,7 +18,7 @@ export class AuthService {
     private readonly etudiantService: EtudiantService,
     private readonly centreService: CentreService,
     private readonly adminService: AdminService,
-    private readonly jwtService : JwtService
+    private readonly jwtService: JwtService,
   ) {}
 
   async signUpProf(createProfDto: CreatProfDto) {
@@ -52,6 +53,7 @@ export class AuthService {
     const token = await this.generateToken({ sub: user.id, role: 'centre' });
     return { user, token };
   }
+
 
   async loginAdmin(logInDto: LogInDTO) {
     const user = await this.adminService.logIn(logInDto);

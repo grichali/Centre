@@ -6,10 +6,8 @@ import { CentreRepository } from './centre.repository';
 import { Centre } from './centre.entity';
 
 @Module({
-  imports:[
-    TypeOrmModule.forFeature([Centre]),
-  ],
-  providers: [CentreService,CentreRepository],
+  imports: [TypeOrmModule.forFeature([Centre])],
+  providers: [CentreService, CentreRepository],
   controllers: [CentreController],
 })
 export class CentreModule {}
