@@ -17,12 +17,7 @@ export class AdminService {
     return await this.adminRepository.logIn(logInDto);
   }
 
-  async DeleteEtudiantByAdmin(token: string, adminId: number, etudiantId: number) {
-    const decodedToken = await this.adminRepository.validateToken(token);
-
-    if (!decodedToken) {
-      throw new UnauthorizedException('Unauthorized');
-    }
+  async DeleteEtudiantByAdmin(adminId: number, etudiantId: number) {
 
     return await this.adminRepository.DeleteEtudiantByAdmin(adminId, etudiantId);
   }
