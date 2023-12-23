@@ -48,7 +48,7 @@ export class ReservationRepository extends Repository<EtudiantFormation> {
     }
   }
 
-  async getEtudiantReservations(etudiantd : number){
+  async getEtudiantReservations(etudiantd : number){ 
     const etudiant = await this.etudiantRepository.findOneOrFail({
       where: { id: etudiantd },
     });
