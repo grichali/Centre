@@ -93,4 +93,52 @@ export class SalleRepository extends Repository<Salle> {
     //probb
     return "hhh"
   }
+
+  
+  async getAvailableTimeSlots(salleId: number, date: any): Promise<string[]> {
+    const dateString = typeof date === 'string' ? date : date.date;
+    const salle = await this.findOne({
+      where: { id: salleId },
+      relations: ['seances'],
+    });
+  
+    if (!salle) {
+      throw new BadRequestException('Salle not found');
+    }
+  
+    const startTime = 8;
+    const endTime = 22;
+  
+    const allTimeSlots: string[] = [];
+  
+    for (let i = startTime; i < endTime; i++) {
+      const formattedStartTime = `${i.toString().padStart(2, '0')}:00`;
+      const formattedEndTime = `${(i + 1).toString().padStart(2, '0')}:00`;
+      allTimeSlots.push(`${formattedStartTime} - ${formattedEndTime}`);
+    }
+  
+    const seancesOnDate = salle.seances.filter(
+      (seance) => seance.date === dateString,
+    );
+  
+    const occupiedTimeSlots: Set<string> = new Set();
+  
+    seancesOnDate.forEach((seance) => {
+      const seanceTimeStart = new Date(`${dateString}T${seance.time}`).getHours();
+      const seanceTimeEnd = seanceTimeStart + seance.duration;
+  
+      for (let i = seanceTimeStart; i < seanceTimeEnd; i++) {
+        const formattedStartTime = `${i.toString().padStart(2, '0')}:00`;
+        const formattedEndTime = `${(i + 1).toString().padStart(2, '0')}:00`;
+        occupiedTimeSlots.add(`${formattedStartTime} - ${formattedEndTime}`);
+      }
+    });
+  
+    const availableTimeSlots = allTimeSlots.filter((timeSlot) => !occupiedTimeSlots.has(timeSlot));
+  
+    return availableTimeSlots;
+  }
+  
+  
+  
 }

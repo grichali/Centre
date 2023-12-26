@@ -22,4 +22,8 @@ export class SalleService {
   async getCentreSalles(centreId : number ){
     return await this.salleRepository.getCentreSalles(centreId);
   }
+
+  async getAvailableTimeSlots(salleId: number, date: string) {
+    return this.salleRepository.getAvailableTimeSlots(salleId,date);
+  }
 }

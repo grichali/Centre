@@ -41,4 +41,12 @@ export class SalleController {
     @Param('/id')centreId : number ){
       return await this.salleService.getCentreSalles(centreId);
   }
+
+  @Get('getavailable')
+  async getAvailableTimeSlots(
+    @Body('salleId') salleId: number,
+    @Body('date') date: string){
+    return this.salleService.getAvailableTimeSlots(salleId,date)
+  }
+
 }
