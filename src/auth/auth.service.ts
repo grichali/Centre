@@ -69,7 +69,6 @@ export class AuthService {
     try {
       return this.jwtService.verify(token);
     } catch (error) {
-      // Handle token validation error
       throw new UnauthorizedException('Invalid token');
     }
   }
