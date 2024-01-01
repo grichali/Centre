@@ -9,7 +9,7 @@ import {
 } from 'typeorm';
 
 @Entity()
-export class Review {
+export class Review { 
   @PrimaryGeneratedColumn()
   id: number;
 

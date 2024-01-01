@@ -11,8 +11,8 @@ import { AuthModule } from './auth/auth.module';
 import { CentreModule } from './centre/centre.module';
 import { SalleModule } from './salle/salle.module';
 import { FormationModule } from './formation/formation.module';
-import { ReservationModule } from './Etudiant/Reservation/reservation.module';
 import { AdminModule } from './admin/admin.module';
+import { FormationReservModule } from './formation_reserv/formation_reserv.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot(typeOrmConfig),
@@ -24,8 +24,8 @@ import { AdminModule } from './admin/admin.module';
     CentreModule,
     SalleModule,
     FormationModule,
-    ReservationModule,
     AdminModule,
+    FormationReservModule,
   ],
 
   controllers: [AppController],

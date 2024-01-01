@@ -5,7 +5,6 @@ import { CreateFormationDto } from './dto/createformation.dto';
 import { ProfRepository } from 'src/Prof/prof.repository';
 import { ModifyFormationDto } from './dto/modifyformation.dto';
 import { SeanceRepository } from 'src/seance/seance.repository';
-import { SeanceService } from 'src/seance/seance.service';
 import { Seance } from 'src/Seance/seance.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 
@@ -20,6 +19,26 @@ export class FormationRepository extends Repository<Formation> {
   ) {
     super(Formation, dataSource.createEntityManager());
   }
+
+
+  async isFormationFinished(formationId: number): Promise<boolean> {
+  const formation = await this.findOne({
+    where: { id: formationId },
+    relations: ['seance'],
+  });
+
+  if (!formation) {
+    throw new BadRequestException('Formation not found');
+  }
+
+  const hasUpcomingSeances = formation.seance.some(seance => {
+    const seanceDate = new Date(seance.date);
+
+    return seanceDate > new Date();
+  });
+
+  return !hasUpcomingSeances;
+}
 
   async getFormation(formationId: number): Promise<Formation> {
     const formation = await this.findOne({
@@ -104,7 +123,7 @@ export class FormationRepository extends Repository<Formation> {
     if (formation.seance && formation.seance.length > 0) {
       await Promise.all(
         formation.seance.map(async (seance) => {
-          await this.seanceRepository.remove(seance); // Adjust this line according to your entity setup
+          await this.seanceRepository.remove(seance); 
         }),
       );
     }
@@ -116,7 +135,19 @@ export class FormationRepository extends Repository<Formation> {
     }
   }
 
-  async getAll() {
+async getAvailableFormation(): Promise<Formation[]> {
+  const formations = await this.getAll();
+  const available: Formation[] = [];
+  for (const formation of formations) {
+    if (!await this.isFormationFinished(formation.id)) {
+      available.push(formation);
+    }
+  }
+  return available;
+}
+
+
+  async getAll() :  Promise<Formation[]> {
     return await this.find({
       relations: ['prof', 'seance', 'seance.salle', 'seance.salle.centre'],
       // filtring what data to return

@@ -39,6 +39,16 @@ export class ReviewRepository extends Repository<Review> {
     if (!formation) {
       throw new BadRequestException('Formation not found');
     }
+    const isFormationFinished = await this.formationRepository.isFormationFinished(formation.id);
+    if (!isFormationFinished) {
+      throw new BadRequestException('Cannot create a review for an unfinished formation');
+    }
+    const existingReview = await this.findOne({
+      where: { etudiant: { id: etudiant.id }, formation: { id: formation.id } },
+    });
+    if (existingReview) {
+      throw new BadRequestException('Etudiant has already submitted a review for this formation');
+    }
     const review = new Review();
     review.profRating = profRating;
     review.centreRating = centreRating;

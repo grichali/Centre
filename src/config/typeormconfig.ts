@@ -7,12 +7,12 @@ import { Etudiant } from 'src/Etudiant/etudiant.entity';
 import { Review } from 'src/Review/review.entity';
 import { Formation } from 'src/Formation/formation.entity';
 import { Prof } from 'src/Prof/prof.entity';
-import { EtudiantFormation } from 'src/Etudiant/Reservation/reservation.entity';
 import { Salle } from 'src/Salle/salle.entity';
 import { Seance } from 'src/Seance/seance.entity';
 import { User } from 'src/User/user.entity';
 import { CentreRepository } from 'src/centre/centre.repository';
 import { Admin } from 'src/admin/entities/admin.entity';
+import { FormationReserv } from 'src/formation_reserv/formation_reserv.entity';
 
 export const typeOrmConfig: TypeOrmModuleOptions = {
   type: 'mysql',
@@ -20,22 +20,22 @@ export const typeOrmConfig: TypeOrmModuleOptions = {
   port: 3306,
   username: 'root',
   password: '',
-  database: 'salles',
+  database: 'qq',
   //  entities: [__dirname + '/../**/*.entity.js'],
   entities: [
     Centre,
     Etudiant,
     Prof,
     User,
-    EtudiantFormation,
     Formation,
     Review,
     Salle,
     Seance,
     Admin,
     CentreRepository,
+    FormationReserv,
   ],
-  synchronize: true,
+  synchronize: true, 
   logging: true,
   autoLoadEntities: true,
 };

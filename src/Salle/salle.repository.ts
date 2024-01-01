@@ -85,14 +85,25 @@ export class SalleRepository extends Repository<Salle> {
     }
   }
 
-  async getCentreSalles(centreId : number){
-
-    const centre = await this.centreRepository.findOne({
-      where : {id : centreId}
-    })
-    //probb
-    return "hhh"
+  async getCentreSalles(centreId: number) {
+    try {
+      const centre = await this.centreRepository.findOne({
+        where: { id: centreId },
+        relations: ['salles'],
+      });
+  
+      if (!centre) {
+        throw new Error(`Centre with ID ${centreId} not found`);
+      }
+  
+      return centre.salles;
+    } catch (error) {
+      console.error('Error getting centre salles:', error);
+      throw new Error('Failed to get centre salles');
+    }
   }
+  
+  
 
   
   async getAvailableTimeSlots(salleId: number, date: any): Promise<string[]> {

@@ -54,4 +54,9 @@ export class FormationController {
   async getAll(){
     return await this.formationService.getAll();
   }
+
+  @Get('getavailable')
+  async getavAilableFormation(){
+    return await this.formationService.getAvailableFormation();
+  }
 }
