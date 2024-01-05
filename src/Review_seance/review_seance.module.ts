@@ -14,7 +14,7 @@ import { SeanceRepository } from 'src/seance/seance.repository';
   ReviewSeanceService,
   ReviewSeanceRepository,
   EtudiantRepository,
-  SeanceRepository,
+  SeanceRepository, 
 ]
 })
 export class ReviewSeanceModule {}
