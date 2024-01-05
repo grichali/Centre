@@ -13,6 +13,7 @@ import { SalleModule } from './salle/salle.module';
 import { FormationModule } from './formation/formation.module';
 import { AdminModule } from './admin/admin.module';
 import { FormationReservModule } from './formation_reserv/formation_reserv.module';
+import { SeanceReservModule } from './seance_reserv/seance_reserv.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot(typeOrmConfig),
@@ -26,6 +27,7 @@ import { FormationReservModule } from './formation_reserv/formation_reserv.modul
     FormationModule,
     AdminModule,
     FormationReservModule,
+    SeanceReservModule,
   ],
 
   controllers: [AppController],

@@ -7,11 +7,14 @@ import { ModifyFormationDto } from './dto/modifyformation.dto';
 import { SeanceRepository } from 'src/seance/seance.repository';
 import { Seance } from 'src/Seance/seance.entity';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Prof } from 'src/Prof/prof.entity';
 
 @Injectable()
 export class FormationRepository extends Repository<Formation> {
   constructor(
     dataSource: DataSource,
+    @Optional()
+    @InjectRepository(Prof)
     private readonly profRepository: ProfRepository,
     @Optional()
     @InjectRepository(Seance)

@@ -4,6 +4,7 @@ import { Review } from 'src/Review/review.entity';
 import { PrimaryGeneratedColumn } from 'typeorm';
 import { User } from 'src/User/user.entity';
 import { FormationReserv } from 'src/formation_reserv/formation_reserv.entity';
+import { SeanceReserv } from 'src/seance_reserv/seance_reserv.entity';
 
 @Entity()
 export class Etudiant extends User{
@@ -14,8 +15,12 @@ export class Etudiant extends User{
   @OneToMany(() => Review, review => review.etudiant)
   reviews: Review[];
 
+  
   @OneToMany(() => FormationReserv , reservations => reservations.etudiant)
   reservations: FormationReserv[];
 
+
+  @OneToMany(() => SeanceReserv , seanceReserv => seanceReserv.etudiant)
+  reservation_seance: SeanceReserv[];
 }
   

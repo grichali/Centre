@@ -1,20 +1,30 @@
 import { LessThan, Repository } from 'typeorm';
 import { Seance } from './seance.entity';
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, Optional } from '@nestjs/common';
 import { DataSource } from 'typeorm';
 import { ProfRepository } from 'src/Prof/prof.repository';
 import { CreateSeanceDto } from './dto/createseance.dto';
 import { SalleRepository } from 'src/salle/salle.repository';
 import { ModifySeanceDto } from './dto/modifyseance.dto';
 import { FormationRepository } from 'src/formation/formation.repository';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Prof } from 'src/Prof/prof.entity';
+import { Salle } from 'src/Salle/salle.entity';
+import { Formation } from 'src/Formation/formation.entity';
 
 @Injectable()
 export class SeanceRepository extends Repository<Seance> {
   constructor(
     dataSource: DataSource,
+    @Optional()
+    @InjectRepository(Prof)
     private readonly profRepository: ProfRepository,
+    @Optional()
+    @InjectRepository(Salle)
     private readonly salleRepository: SalleRepository,
-    private readonly formationRepository?: FormationRepository,
+    @Optional()
+    @InjectRepository(Formation)
+    private readonly formationRepository: FormationRepository,
   ) {
     super(Seance, dataSource.createEntityManager());
   }
@@ -25,7 +35,7 @@ export class SeanceRepository extends Repository<Seance> {
     SalleId: number,
   ): Promise<Seance> {
     const {
-      titre,
+      titre, 
       date,
       time,
       duration,
@@ -155,7 +165,7 @@ export class SeanceRepository extends Repository<Seance> {
   }
 
   async integreFormation(
-    seanceId: number,
+    seanceId: number, 
     formationId: number,
   ): Promise<Seance> {
     const seance = await this.findOne({

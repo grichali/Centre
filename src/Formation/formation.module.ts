@@ -9,6 +9,7 @@ import { SeanceRepository } from 'src/seance/seance.repository';
 import { SeanceService } from 'src/seance/seance.service';
 import { SalleRepository } from 'src/salle/salle.repository';
 import { CentreRepository } from 'src/centre/centre.repository';
+import { SeanceResevRepository } from 'src/seance_reserv/seance_reserv.repository';
  
 @Module({
   imports: [TypeOrmModule.forFeature([Formation])],
@@ -21,6 +22,7 @@ import { CentreRepository } from 'src/centre/centre.repository';
     SeanceService,
     SalleRepository,
     CentreRepository,
+    SeanceResevRepository,
   ],
 })
 export class FormationModule {}

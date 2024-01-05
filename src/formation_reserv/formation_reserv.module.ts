@@ -4,17 +4,18 @@ import { FormationReservController } from './formation_reserv.controller';
 import { FormationReservRepository } from './formation_reserv.repository';
 import { EtudiantRepository } from 'src/etudiant/etudiant.repository';
 import { FormationRepository } from 'src/formation/formation.repository';
-import { ProfRepository } from 'src/prof/prof.repository';
 import { FormationReserv } from './formation_reserv.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
-
+import { ProfRepository } from 'src/prof/prof.repository';
+ 
 @Module({
   imports:[TypeOrmModule.forFeature([FormationReserv])],
   providers: [FormationReservService,
-    FormationRepository,
+    FormationReservRepository,
     EtudiantRepository,
+    FormationRepository,
     ProfRepository,
   ],
   controllers: [FormationReservController]
 })
-export class FormationReservModule {} 
+export class FormationReservModule {}

@@ -5,7 +5,7 @@ import { Seance } from "src/Seance/seance.entity";
 import { FormationReserv } from "src/formation_reserv/formation_reserv.entity";
 import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
-@Entity()
+@Entity() 
 export class Formation {
     @PrimaryGeneratedColumn()
     id : number ;
@@ -29,7 +29,7 @@ export class Formation {
     @ManyToOne(()=>Prof, prof => prof.formations)
     prof : Prof;
 
-    @OneToMany(() => FormationReserv , reservations => reservations.etudiant)
+    @OneToMany(() => FormationReserv , reservations => reservations.formation)
     reservations: FormationReserv[];
 
 }

@@ -1,38 +1,40 @@
-import { BadRequestException, Injectable } from "@nestjs/common";
-import { FormationReserv } from "./formation_reserv.entity";
+import { BadRequestException, Injectable, Optional } from "@nestjs/common";
 import { DataSource, Repository } from "typeorm";
-import { EtudiantRepository } from "src/etudiant/etudiant.repository";
+import { SeanceReserv } from "./seance_reserv.entity";
 import { FormationRepository } from "src/formation/formation.repository";
-import { Formation } from "src/Formation/formation.entity";
+import { EtudiantRepository } from "src/etudiant/etudiant.repository";
 import { InjectRepository } from "@nestjs/typeorm";
-
- 
+import { Seance } from "src/Seance/seance.entity";
+import { SeanceRepository } from "src/seance/seance.repository";
 
 @Injectable()
 
-export class FormationReservRepository extends Repository<FormationReserv>{
- 
-  constructor(
-    private dataSource: DataSource,
-    private readonly etudiantRepository: EtudiantRepository,
-    private readonly formationRepository: FormationRepository,
-  ) {
-    super(FormationReserv, dataSource.createEntityManager());
-  }
+export class SeanceResevRepository extends Repository<SeanceReserv>{
+    constructor(
+        dataSource: DataSource,
+        @Optional()
+        @InjectRepository(Seance)
+        private readonly seanceRepository : SeanceRepository,
+        @Optional()
+        @InjectRepository(EtudiantRepository)
+        private readonly etudiantRepository : EtudiantRepository,
+      ) {
+        super(SeanceReserv, dataSource.createEntityManager());
+      }
+
 
       
-  async createReservation(etudiantId: number, formationId: number) {
-    const FormationRepository = await this.dataSource.getRepository(Formation);
-    const formation = await FormationRepository.findOneOrFail({
-      where: { id: formationId },
+  async createReservation(etudiantId: number, seanceId: number) {
+    const seance = await this.seanceRepository.findOneOrFail({
+      where: { id: seanceId },
     });
     const etudiant = await this.etudiantRepository.findOneOrFail({
       where: { id: etudiantId },
     });
 
     try {
-      const reservation = new FormationReserv();
-      reservation.formation = formation;
+      const reservation = new SeanceReserv();
+      reservation.seance = seance;
       reservation.etudiant = etudiant;
 
       return await this.save(reservation);
@@ -48,17 +50,16 @@ export class FormationReservRepository extends Repository<FormationReserv>{
       return "reservation has been deleted succesfully";
     }catch(error){
       throw new BadRequestException('Failed to delete reservation');
-
     }
   }
 
 
 
-  async getEtudiantReservations(etudiantId: number): Promise<FormationReserv[]> {
+  async getEtudiantReservations(etudiantId: number): Promise<SeanceReserv[]> {
     try {
       const reservations = await this.find({
         where: { etudiant: { id: etudiantId } },
-        relations: ['etudiant', 'formation'], 
+        relations: ['etudiant', 'seance'], 
       });
       console.log(reservations);
       return reservations;
@@ -67,4 +68,5 @@ export class FormationReservRepository extends Repository<FormationReserv>{
       throw new Error('Failed to get reservations');
     }
   }
+
 }

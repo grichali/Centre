@@ -1,6 +1,7 @@
 import { Formation } from 'src/Formation/formation.entity';
 import { Prof } from 'src/Prof/prof.entity';
 import { Salle } from 'src/Salle/salle.entity';
+import { SeanceReserv } from 'src/seance_reserv/seance_reserv.entity';
 import {
   Column,
   Entity,
@@ -20,7 +21,7 @@ export class Seance {
   @Column()
   date: string;
 
-  @Column()
+  @Column() 
   duration: number;
 
   @Column()
@@ -43,4 +44,7 @@ export class Seance {
 
   @ManyToOne(() => Prof, (prof) => prof.seances)
   prof: Prof;
+
+  @OneToMany(() => SeanceReserv , seanceReserv => seanceReserv.seance)
+  reservations: SeanceReserv[];
 }

@@ -1,17 +1,17 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { FormationReserv } from './formation_reserv.entity';
+import { FormationReservRepository } from './formation_reserv.repository';
 
 @Injectable()
 export class FormationReservService {
 
     constructor(
-        private readonly formationReservService: FormationReservService,
+        private readonly formationReservRepository: FormationReservRepository,
       ) {}
-    
+     
       async createReservation(etudiantId: number, formationId: number) {
     
         try {
-          return await this.formationReservService.createReservation(etudiantId, formationId);
+          return await this.formationReservRepository.createReservation(etudiantId, formationId);
         } catch (error) {
           console.error('Error creating reservation:', error);
           throw new BadRequestException('Failed to create reservation');
@@ -19,10 +19,10 @@ export class FormationReservService {
       }
 
       async getEtudiantReservations(etudiantId : number ){
-        return await this.formationReservService.getEtudiantReservations(etudiantId);
+        return await this.formationReservRepository.getEtudiantReservations(etudiantId);
       }
 
       async deleteReservation(resId:number){
-        return await this.formationReservService.deleteReservation(resId);
+        return await this.formationReservRepository.deleteReservation(resId);
       }
 } 
