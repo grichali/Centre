@@ -1,5 +1,6 @@
 import { Formation } from 'src/Formation/formation.entity';
 import { Prof } from 'src/Prof/prof.entity';
+import { ReviewSeance } from 'src/Review_seance/review_seance.entity';
 import { Salle } from 'src/Salle/salle.entity';
 import { SeanceReserv } from 'src/seance_reserv/seance_reserv.entity';
 import {
@@ -47,4 +48,8 @@ export class Seance {
 
   @OneToMany(() => SeanceReserv , seanceReserv => seanceReserv.seance)
   reservations: SeanceReserv[];
+  
+  @OneToMany(() => ReviewSeance , reviewSeance => reviewSeance.seance)
+  reviews: ReviewSeance[];
+
 }

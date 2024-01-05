@@ -1,5 +1,6 @@
 import { Etudiant } from 'src/Etudiant/etudiant.entity';
 import { Formation } from 'src/Formation/formation.entity';
+import { Seance } from 'src/Seance/seance.entity';
 import {
   Column,
   Entity,
@@ -8,8 +9,8 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-@Entity('formation_reviews')
-export class Review { 
+@Entity('seance_reviews')
+export class ReviewSeance { 
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -25,9 +26,9 @@ export class Review {
   @Column()
   centreReview: string;
 
-  @ManyToOne(() => Formation, (formation) => formation.reviews)
-  formation: Formation;
+  @ManyToOne(() => Seance, (seance) => seance.reviews)
+  seance: Seance;
 
-  @ManyToOne(() => Etudiant, (etudiant) => etudiant.reviews)
+  @ManyToOne(() => Etudiant, (etudiant) => etudiant.review_seance)
   etudiant: Etudiant;
 }

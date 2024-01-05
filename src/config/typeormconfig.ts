@@ -14,6 +14,7 @@ import { CentreRepository } from 'src/centre/centre.repository';
 import { Admin } from 'src/admin/entities/admin.entity';
 import { FormationReserv } from 'src/formation_reserv/formation_reserv.entity';
 import { SeanceReserv } from 'src/seance_reserv/seance_reserv.entity';
+import { ReviewSeance } from 'src/Review_seance/review_seance.entity';
 
 export const typeOrmConfig: TypeOrmModuleOptions = {
   type: 'mysql',
@@ -36,6 +37,7 @@ export const typeOrmConfig: TypeOrmModuleOptions = {
     CentreRepository,
     FormationReserv,
     SeanceReserv,
+    ReviewSeance,
    ],
   synchronize: true, 
   logging: true, 
