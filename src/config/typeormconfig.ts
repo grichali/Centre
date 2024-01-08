@@ -22,7 +22,7 @@ export const typeOrmConfig: TypeOrmModuleOptions = {
   port: 3306,
   username: 'root',
   password: '',
-  database: 'qq',
+  database: 'salles',
   //  entities: [__dirname + '/../**/*.entity.js'],
   entities: [
     Centre,

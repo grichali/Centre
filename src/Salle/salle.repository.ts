@@ -18,7 +18,7 @@ export class SalleRepository extends Repository<Salle> {
     createSalleDto: CreateSalleDto,
     centreId: number,
   ): Promise<Salle> {
-    const { nombrePlace, prixHeure} = createSalleDto;
+    const { nombrePlace, prixHeure,description} = createSalleDto;
 
     const id = centreId;
     const centre = await this.centreRepository.findOne({
@@ -32,6 +32,7 @@ export class SalleRepository extends Repository<Salle> {
     salle.nombrePlace = nombrePlace;
     salle.prixHeure = prixHeure;
     salle.centre = centre;
+    salle.description = description;
 
     try {
       await this.save(salle);

@@ -11,13 +11,19 @@ import { ProfRepository } from 'src/prof/prof.repository';
 import { SeanceRepository } from 'src/seance/seance.repository';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([SeanceReserv]),],
+  imports: [
+    TypeOrmModule.forFeature([SeanceReserv, ProfRepository, FormationRepository]),
+  ],
   controllers: [SeanceReservController],
   providers: [
     SeanceReservService,
     SeanceResevRepository,
     EtudiantRepository,
     SeanceRepository,
-  ]
+    ProfRepository,
+    FormationRepository,
+    
+  ],
 })
 export class SeanceReservModule {}
+

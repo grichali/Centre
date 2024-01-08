@@ -2,9 +2,7 @@ import { LessThan, Repository } from 'typeorm';
 import { Seance } from './seance.entity';
 import { BadRequestException, Injectable, Optional } from '@nestjs/common';
 import { DataSource } from 'typeorm';
-import { ProfRepository } from 'src/Prof/prof.repository';
 import { CreateSeanceDto } from './dto/createseance.dto';
-import { SalleRepository } from 'src/salle/salle.repository';
 import { ModifySeanceDto } from './dto/modifyseance.dto';
 import { FormationRepository } from 'src/formation/formation.repository';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -15,20 +13,11 @@ import { Formation } from 'src/Formation/formation.entity';
 @Injectable()
 export class SeanceRepository extends Repository<Seance> {
   constructor(
-    dataSource: DataSource,
-    @Optional()
-    @InjectRepository(Prof)
-    private readonly profRepository: ProfRepository,
-    @Optional()
-    @InjectRepository(Salle)
-    private readonly salleRepository: SalleRepository,
-    @Optional()
-    @InjectRepository(Formation)
-    private readonly formationRepository: FormationRepository,
+   private dataSource: DataSource,
   ) {
     super(Seance, dataSource.createEntityManager());
   }
-
+  
   async createSeance(
     createSeanceDto: CreateSeanceDto,
     ProfId: number,
@@ -46,11 +35,13 @@ export class SeanceRepository extends Repository<Seance> {
 
     const id = ProfId;
     const id_s = SalleId;
-    const prof = await this.profRepository.findOne({ where: { id } });
+    const ProfRepository = await this.dataSource.getRepository('Prof');
+    const prof = (await ProfRepository.findOne({ where: { id } })) as Prof;
     if (!prof) {
       throw new BadRequestException('Prof not found');
     }
-    const salle = await this.salleRepository.findOne({ where: { id: id_s } });
+    const SalleRepository = await this.dataSource.getRepository('Salle')
+    const salle = await SalleRepository.findOne({ where: { id: id_s } }) as Salle;
     if (!salle) {
       throw new BadRequestException('Salle not found');
     }
@@ -92,20 +83,17 @@ export class SeanceRepository extends Repository<Seance> {
     time: string,
     duration: number,
   ): Promise<boolean> {
-    // Calculate the end time based on the provided time and duration
     const endTime = new Date(`${date}T${time}`);
     endTime.setHours(endTime.getHours() + duration);
 
-    // Check if there is any existing seance for the salle during the specified time range
     const existingSeance = await this.findOne({
       where: {
         salle: { id: salleId },
         date: date,
-        time: LessThan(endTime.toISOString()), // Check if the existing seance ends before the new one starts
+        time: LessThan(endTime.toISOString()),
       },
     });
 
-    // If there is an existing seance during the specified time range, salle is not available
     return !existingSeance;
   }
 
@@ -172,10 +160,11 @@ export class SeanceRepository extends Repository<Seance> {
       where: { id: seanceId },
       relations: ['prof', 'formation', 'salle'],
     });
-    const formation = await this.formationRepository.findOne({
+    const formationRepository = await this.dataSource.getRepository('Formation') ;
+    const formation = await formationRepository.findOne({
       where: { id: formationId },
       relations: ['prof', 'seance'],
-    });
+    }) as Formation;
 
     if (!seance) {
       throw new BadRequestException('Seance not found');

@@ -14,5 +14,5 @@ export class CreateSalleDto {
   prixHeure: number;
 
   @IsString()
-  description : String ; 
+  description : string ; 
 }

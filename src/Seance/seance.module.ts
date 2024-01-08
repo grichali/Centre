@@ -15,16 +15,17 @@ import { FormationService } from 'src/formation/formation.service';
 import { SalleModule } from 'src/salle/salle.module';
 import { CentreService } from 'src/centre/centre.service';
 @Module({
-  imports: [TypeOrmModule.forFeature([Seance]), CentreModule, FormationModule,],
+  imports: [TypeOrmModule.forFeature([Seance])],
   controllers: [SeanceController],
   providers: [
     SeanceService,
     SeanceRepository,
-    ProfRepository,
-    SalleRepository,
-    FormationRepository,
-    FormationService,
     CentreRepository,
+    ProfRepository,
+    FormationRepository,
+    SalleRepository,
+
+
   ],
 })
 export class SeanceModule {}
