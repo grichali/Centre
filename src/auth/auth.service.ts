@@ -38,32 +38,37 @@ export class AuthService {
 
   async loginProf(logInDto: LogInDTO) {
     const user = await this.profService.logIn(logInDto);
-    const token = await this.generateToken({ sub: user.id, role: 'prof' });
+    const token = await this.generateToken({ payload: user, role: 'prof' });
     return { user, token };
   }
 
   async loginEtudiant(logInDto: LogInDTO) {
     const user = await this.etudiantService.logIn(logInDto);
-    const token = await this.generateToken({ sub: user.id, role: 'etudiant' });
+    const token = await this.generateToken({ payload: user, role: 'etudiant' });
     return { user, token };
   }
 
   async loginCentre(logInDto: LogInDTO) {
     const user = await this.centreService.logIn(logInDto);
-    const token = await this.generateToken({ sub: user.id, role: 'centre' });
+    const token = await this.generateToken({ payload: user, role: 'centre' });
     return { user, token };
   }
-
 
   async loginAdmin(logInDto: LogInDTO) {
     const user = await this.adminService.logIn(logInDto);
-    const token = await this.generateToken({ sub: user.id, role: 'admin' });
+    const token = await this.generateToken({ payload: user, role: 'admin' });
     return { user, token };
   }
 
-  async generateToken(payload: any): Promise<string> {
-    return this.jwtService.sign(payload);
-  }
+
+async generateToken(tokenData: { payload: any; role: string }): Promise<string> {
+  const { payload, role } = tokenData;
+  payload.role = role;
+  console.log(role)
+  return this.jwtService.sign({payload});
+}
+
+
 
   async validateToken(token: string): Promise<any> {
     try {

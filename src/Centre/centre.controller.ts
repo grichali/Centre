@@ -20,11 +20,11 @@ export class CentreController {
   }
 
   @Get('getcentre/:id')
-  async getCentre(@Param('/:id') centreId: number) {
+  async getCentre(@Param(':id') centreId: number) {
     return this.centreService.getCentre(centreId);
   }
   @Delete('delete/:id')
-  async DeleteCentre(@Param('/id') centreId: number): Promise<void> {
+  async DeleteCentre(@Param('id') centreId: number): Promise<void> {
     return this.centreService.DeleteCentre(centreId);
   }
 }

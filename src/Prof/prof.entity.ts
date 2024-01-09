@@ -15,6 +15,5 @@ export class Prof extends User {
   @OneToMany(() => Seance, (seance) => seance.prof)
   seances: Seance[];
 
-  
 }
  
