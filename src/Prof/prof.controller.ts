@@ -9,7 +9,6 @@ export class ProfController {
 
     constructor(
         private readonly profService : ProfService,
-        private readonly authService: AuthService,
     ){}
 
     @Get('getprof/:id')

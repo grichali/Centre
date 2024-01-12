@@ -16,16 +16,7 @@ import { Formation } from 'src/Formation/formation.entity';
 @Injectable()
 export class SeanceRepository extends Repository<Seance> {
   constructor(
-    dataSource: DataSource,
-    @Optional()
-    @InjectRepository(Prof)
-    private readonly profRepository: ProfRepository,
-    @Optional()
-    @InjectRepository(Salle)
-    private readonly salleRepository: SalleRepository,
-    @Optional()
-    @InjectRepository(Formation)
-    private readonly formationRepository: FormationRepository,
+    private dataSource: DataSource,
   ) {
     super(Seance, dataSource.createEntityManager());
   }
@@ -45,13 +36,15 @@ export class SeanceRepository extends Repository<Seance> {
       placeDisponible,
     } = createSeanceDto;
 
-    const id_1 = ProfId;
+    const id = ProfId;
     const id_s = SalleId;
-    const prof = await this.profRepository.findOne({ where: { id: id_1 } });
+    const ProfRepository = await this.dataSource.getRepository('Prof');
+    const prof = (await ProfRepository.findOne({ where: { id } })) as Prof;
     if (!prof) {
       throw new BadRequestException('Prof not found');
     }
-    const salle = await this.salleRepository.findOne({ where: { id: id_s } });
+    const SalleRepository = await this.dataSource.getRepository('Salle')
+    const salle = await SalleRepository.findOne({ where: { id: id_s } }) as Salle;
     if (!salle) {
       throw new BadRequestException('Salle not found');
     }
@@ -102,7 +95,7 @@ export class SeanceRepository extends Repository<Seance> {
       where: {
         salle: { id: salleId },
         date: date,
-        time: LessThan(endTime.toISOString()), // Check if the existing seance ends before the new one starts
+        time: LessThan(endTime.toISOString()),
       },
     });
 
@@ -173,10 +166,11 @@ export class SeanceRepository extends Repository<Seance> {
       where: { id: seanceId },
       relations: ['prof', 'formation', 'salle'],
     });
-    const formation = await this.formationRepository.findOne({
+    const formationRepository = await this.dataSource.getRepository('Formation') ;
+    const formation = await formationRepository.findOne({
       where: { id: formationId },
       relations: ['prof', 'seance'],
-    });
+    }) as Formation;
 
     if (!seance) {
       throw new BadRequestException('Seance not found');
