@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { BadRequestException, Injectable } from "@nestjs/common";
 import { FormationReserv } from "./formation_reserv.entity";
 import { DataSource, Repository } from "typeorm";
@@ -6,12 +7,12 @@ import { FormationRepository } from "src/formation/formation.repository";
 import { Formation } from "src/Formation/formation.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 
- 
+
 
 @Injectable()
 
 export class FormationReservRepository extends Repository<FormationReserv>{
- 
+
   constructor(
     private dataSource: DataSource,
     private readonly etudiantRepository: EtudiantRepository,
@@ -20,7 +21,7 @@ export class FormationReservRepository extends Repository<FormationReserv>{
     super(FormationReserv, dataSource.createEntityManager());
   }
 
-      
+
   async createReservation(etudiantId: number, formationId: number) {
     const FormationRepository = await this.dataSource.getRepository(Formation);
     const formation = await FormationRepository.findOneOrFail({
@@ -58,7 +59,7 @@ export class FormationReservRepository extends Repository<FormationReserv>{
     try {
       const reservations = await this.find({
         where: { etudiant: { id: etudiantId } },
-        relations: ['etudiant', 'formation'], 
+        relations: ['etudiant', 'formation'],
       });
       console.log(reservations);
       return reservations;

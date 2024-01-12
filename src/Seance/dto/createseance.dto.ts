@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { IsNotEmpty, IsNumber, Min, IsString } from 'class-validator';
 
 export class CreateSeanceDto {

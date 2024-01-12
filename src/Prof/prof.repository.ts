@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { DataSource, EntityRepository, Repository } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 import { Prof } from './prof.entity';
 import { CreatProfDto } from './dto/create-prof.dto';
 import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
@@ -87,7 +87,7 @@ export class ProfRepository extends Repository<Prof> {
   async DeleteProf(profId: number) {
     const prof = await this.findOne({
       where: { id: profId },
-      relations: ['formations', 'seances'], 
+      relations: ['formations', 'seances'],
     });
 
     if (!prof) {

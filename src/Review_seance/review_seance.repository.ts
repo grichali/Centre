@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { BadRequestException, Injectable } from "@nestjs/common";
 import { DataSource, Repository } from "typeorm";
 import { ReviewSeance } from "./review_seance.entity";
@@ -8,7 +9,7 @@ import { ModifyReviewDto } from "src/review/dto/modifyReview.dto";
 
 @Injectable()
 export class ReviewSeanceRepository extends Repository<ReviewSeance> {
-  
+
   constructor(
     dataSource: DataSource,
     private readonly etudiantRepository: EtudiantRepository,

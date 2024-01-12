@@ -70,11 +70,12 @@ async generateToken(tokenData: { payload: any; role: string }): Promise<string> 
 
 
 
-  async validateToken(token: string): Promise<any> {
+  async verifyToken(token: string): Promise<any> {
     try {
       return this.jwtService.verify(token);
     } catch (error) {
       throw new UnauthorizedException('Invalid token');
     }
   }
+
 }

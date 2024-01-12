@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Etudiant } from "src/Etudiant/etudiant.entity";
 import { Prof } from "src/Prof/prof.entity";
 import { Review } from "src/Review/review.entity";
@@ -5,7 +6,7 @@ import { Seance } from "src/Seance/seance.entity";
 import { FormationReserv } from "src/formation_reserv/formation_reserv.entity";
 import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
-@Entity() 
+@Entity()
 export class Formation {
     @PrimaryGeneratedColumn()
     id : number ;
@@ -13,16 +14,16 @@ export class Formation {
     @Column()
     Type:string ;
 
-    @Column() 
+    @Column()
     prix : number;
- 
+
     @Column()
     description : string;
 
     @OneToMany(() => Seance , seance =>seance.formation)
     seance : Seance[];
 
-    
+
     @OneToMany(() => Review , review => review.formation)
     reviews : Review[];
 
