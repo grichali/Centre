@@ -7,9 +7,11 @@ import { FormationRepository } from 'src/formation/formation.repository';
 import { FormationReserv } from './formation_reserv.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ProfRepository } from 'src/prof/prof.repository';
+import { ConfigModule } from '@nestjs/config';
+import { JwtModule } from '@nestjs/jwt';
  
 @Module({
-  imports:[TypeOrmModule.forFeature([FormationReserv])],
+  imports:[TypeOrmModule.forFeature([FormationReserv]),ConfigModule.forRoot(),JwtModule],
   providers: [FormationReservService,
     FormationReservRepository,
     EtudiantRepository,

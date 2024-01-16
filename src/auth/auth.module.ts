@@ -11,16 +11,12 @@ import { EtudiantRepository } from 'src/etudiant/etudiant.repository';
 import { CentreService } from 'src/centre/centre.service';
 import { Centre } from 'src/Centre/centre.entity';
 import { CentreRepository } from 'src/centre/centre.repository';
-import { JwtModule, JwtService } from '@nestjs/jwt';
 import { AdminRepository } from 'src/admin/admin.repository';
 import { AdminService } from 'src/admin/admin.service';
+import { JwtModule } from 'src/jwt/jwt.module';
 
-@Module({imports: [
-  JwtModule.register({
-    secret: 'hah123@@', 
-    signOptions: { expiresIn: '1h' }, 
-  }),
-],
+@Module({imports: [JwtModule]
+  ,
   controllers: [AuthController],
   providers: [
     AuthService,
@@ -32,6 +28,7 @@ import { AdminService } from 'src/admin/admin.service';
     EtudiantRepository,
     CentreRepository,
     AdminRepository,
+    JwtModule
   ],
 })
 export class AuthModule {}

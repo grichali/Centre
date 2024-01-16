@@ -77,4 +77,8 @@ async generateToken(tokenData: { payload: any; role: string }): Promise<string> 
       throw new UnauthorizedException('Invalid token');
     }
   }
+
+  async validateToken2( token : string , token1 : string ){
+    return 
+  }
 }

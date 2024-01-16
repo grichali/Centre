@@ -1,7 +1,10 @@
-import { Body, Controller, Delete, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Param, Post, UseGuards } from '@nestjs/common';
 import { FormationReservService } from './formation_reserv.service';
+import { JwtAuthGuard } from 'src/jwt/jwt-auth.guard';
 
 @Controller('formation-reserv') 
+
+@UseGuards(JwtAuthGuard) 
 export class FormationReservController {
 
 
