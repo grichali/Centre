@@ -31,7 +31,6 @@ import { JwtStrategy } from 'src/jwt/jwt.strategy';
     CentreRepository,
     AdminRepository,
     JwtModule,
-    
     JwtStrategy
   ],
 })

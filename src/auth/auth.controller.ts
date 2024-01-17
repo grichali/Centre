@@ -6,7 +6,7 @@ import { CreatProfDto } from 'src/prof/dto/create-prof.dto';
 import { CreatCentreDto } from 'src/Centre/dto/create-centre.dto';
 import { CreateAdminDto } from 'src/admin/dto/create-admin.dto';
 
-@Controller('auth') 
+@Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 

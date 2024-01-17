@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Injectable, ExecutionContext, UnauthorizedException } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { JwtService } from '@nestjs/jwt';
@@ -16,6 +17,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
 
     const request = context.switchToHttp().getRequest();
     const token = this.extractTokenFromRequest(request);
+    
 
     if (!token) {
       console.log('JwtAuthGuard - No token found');
@@ -24,7 +26,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
 
     try {
       const decoded = this.jwtService.verify(token,
-      { 
+      {
         secret: jwtConstants.secret
       });
       request['user'] = decoded;
@@ -38,25 +40,25 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
   }
 
   private extractTokenFromRequest(request): string {
-    console.log('JwtAuthGuard - extractTokenFromRequest - Start');
-
-    
     const authHeader = request.headers['authorization'];
 
     if (!authHeader) {
-      console.log('JwtAuthGuard - No authorization header');
       return null;
     }
 
     const [bearer, token] = authHeader.split(' ');
 
     if (bearer.toLowerCase() !== 'bearer' || !token) {
-      console.log('JwtAuthGuard - Invalid authorization header');
       return null;
     }
 
-    console.log('JwtAuthGuard - Token extracted successfully');
-    console.log(token);
     return token;
   }
+  handleRequest(err, user, info) {
+    if (err || !user) {
+      throw err || new UnauthorizedException();
+    }
+    return user;
+  }
+
 }

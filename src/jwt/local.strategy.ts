@@ -1,4 +1,5 @@
-import { Strategy } from 'passport-local';
+/* eslint-disable prettier/prettier */
+/*import { Strategy } from 'passport-local';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { AuthService } from 'src/auth/auth.service';
@@ -17,4 +18,4 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
     }
     return user;
   }
-}
+}*/

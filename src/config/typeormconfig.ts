@@ -22,7 +22,7 @@ export const typeOrmConfig: TypeOrmModuleOptions = {
   port: 3306,
   username: 'root',
   password: '',
-  database: 'salles',
+  database: 'aa',
   //  entities: [__dirname + '/../**/*.entity.js'],
   entities: [
     Centre,
@@ -39,7 +39,7 @@ export const typeOrmConfig: TypeOrmModuleOptions = {
     SeanceReserv,
     ReviewSeance,
    ],
-  synchronize: true, 
-  logging: true, 
+  synchronize: true,
+  logging: true,
   autoLoadEntities: true,
 };

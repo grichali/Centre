@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import {
   Body,
   Controller,
@@ -6,24 +7,35 @@ import {
   Param,
   Post,
   UseGuards,
-  ValidationPipe,
+  ValidationPipe,Req, UnauthorizedException,
 } from '@nestjs/common';
 import { SalleService } from './salle.service';
 import { CreateSalleDto } from './dto/createsalle.dto';
 import { ModifySalleDto } from './dto/modifysalle.dto';
 import { JwtAuthGuard } from 'src/jwt/jwt-auth.guard';
+import { RolesGuard } from 'src/jwt/roles.guard';
+import { Roles } from 'src/Roles/roles.decorator';
+
 
 @Controller('salle')
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard, RolesGuard)
+
 export class SalleController {
   constructor(private readonly salleService: SalleService) {}
-
-  @Post('create/:id')
+  @Roles('centre')
+  @Post('create')
   async createSalle(
     @Body(ValidationPipe) createSalleDto: CreateSalleDto,
-    @Param('id') centreid: number,
+    @Req() req,
   ) {
-    return await this.salleService.createSalle(createSalleDto, centreid);
+    const centreId = req.user.payload.id;
+    console.log("mama")
+
+    if (req.user.roles.includes('centre')) {
+      return await this.salleService.createSalle(createSalleDto, centreId);
+    } else {
+      throw new UnauthorizedException('You do not have the required role to create a salle');
+    }
   }
 
   @Post('modify/:id')
