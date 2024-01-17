@@ -57,10 +57,16 @@ export class FormationReservRepository extends Repository<FormationReserv>{
 
   async getEtudiantReservations(etudiantId: number): Promise<FormationReserv[]> {
     try {
+      const etudiant1 = await this.etudiantRepository.findOne({
+        where: { id: etudiantId },
+      });
       const reservations = await this.find({
         where: { etudiant: { id: etudiantId } },
         relations: ['etudiant', 'formation'],
       });
+        where: { etudiant: { id: etudiant1.id } },
+        relations : ['formation','formation.prof' ,'formation.seance']
+      });;
       console.log(reservations);
       return reservations;
     } catch (error) {

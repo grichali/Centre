@@ -5,13 +5,16 @@ import {
   Get,
   Param,
   Post,
+  UseGuards,
   ValidationPipe,
 } from '@nestjs/common';
 import { SalleService } from './salle.service';
 import { CreateSalleDto } from './dto/createsalle.dto';
 import { ModifySalleDto } from './dto/modifysalle.dto';
+import { JwtAuthGuard } from 'src/jwt/jwt-auth.guard';
 
 @Controller('salle')
+@UseGuards(JwtAuthGuard)
 export class SalleController {
   constructor(private readonly salleService: SalleService) {}
 

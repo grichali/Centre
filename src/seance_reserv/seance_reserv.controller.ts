@@ -1,7 +1,9 @@
-import { Body, Controller, Delete, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Param, Post, UseGuards } from '@nestjs/common';
 import { SeanceReservService } from './seance_reserv.service';
+import { JwtAuthGuard } from 'src/jwt/jwt-auth.guard';
 
 @Controller('seance-reserv')
+@UseGuards(JwtAuthGuard)
 export class SeanceReservController {
 
     constructor(private readonly seanceReservService: SeanceReservService) {}

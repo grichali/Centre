@@ -1,16 +1,11 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Post,
-  ValidationPipe,
-} from '@nestjs/common';
+import { Controller, Delete,Get,Param,UseGuards} from '@nestjs/common';
 import { CentreService } from './centre.service';
 import { CreatCentreDto } from './dto/create-centre.dto';
+import { JwtAuthGuard } from 'src/jwt/jwt-auth.guard';
 
 @Controller('centre')
+@UseGuards(JwtAuthGuard)
+
 export class CentreController {
   constructor(private readonly centreService: CentreService) {}
 

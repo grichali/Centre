@@ -15,8 +15,18 @@ import { AdminModule } from './admin/admin.module';
 import { FormationReservModule } from './formation_reserv/formation_reserv.module';
 import { SeanceReservModule } from './seance_reserv/seance_reserv.module';
 import { ReviewSeanceModule } from './review_seance/review_seance.module';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { JwtModule } from '@nestjs/jwt';
 @Module({
-  imports: [
+  imports: [ConfigModule.forRoot(),
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      useFactory: (configService: ConfigService) => ({
+        secret: configService.get<string>('jwt.secret'),
+        // other JWT options...
+      }),
+      inject: [ConfigService],
+    }),
     TypeOrmModule.forRoot(typeOrmConfig),
     ProfModule,
     EtudiantModule,

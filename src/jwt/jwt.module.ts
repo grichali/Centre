@@ -1,15 +1,18 @@
-/* eslint-disable prettier/prettier */
 import { Module } from '@nestjs/common';
-import { JwtModule as NestJwtModule, JwtModuleOptions, JwtService } from '@nestjs/jwt';
+import { JwtService, JwtModule as NestJwtModule } from '@nestjs/jwt';
+import { FormationReserv } from 'src/formation_reserv/formation_reserv.entity';
+import { jwtConstants } from './constants';
+import { Etudiant } from 'src/Etudiant/etudiant.entity';
 
 @Module({
-  imports: [NestJwtModule.registerAsync({
-    useFactory: async (): Promise<JwtModuleOptions> => ({
-      secret: 'hah123@@',
+  imports: [
+    NestJwtModule.register({
+      global: true,
+      secret: jwtConstants.secret,
       signOptions: { expiresIn: '10h' },
     }),
-  })],
-  providers: [JwtService],
-  exports: [NestJwtModule],
+    FormationReserv,
+    Etudiant
+  ],
 })
 export class JwtModule {}

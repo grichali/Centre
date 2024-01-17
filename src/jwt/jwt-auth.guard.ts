@@ -1,6 +1,7 @@
 import { Injectable, ExecutionContext, UnauthorizedException } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { JwtService } from '@nestjs/jwt';
+import { jwtConstants } from './constants';
 
 @Injectable()
 export class JwtAuthGuard extends AuthGuard('jwt') {
@@ -22,8 +23,11 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     }
 
     try {
-      const decoded = this.jwtService.verify(token,{ secret: 'hah123@@'});
-      request.user = decoded;
+      const decoded = this.jwtService.verify(token,
+      {
+        secret: jwtConstants.secret
+      });
+      request['user'] = decoded;
       console.log('JwtAuthGuard - Token verified successfully : ');
       console.log(request.user)
       return super.canActivate(context);
@@ -36,7 +40,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
   private extractTokenFromRequest(request): string {
     console.log('JwtAuthGuard - extractTokenFromRequest - Start');
 
-    
+
     const authHeader = request.headers['authorization'];
 
     if (!authHeader) {

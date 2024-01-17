@@ -70,7 +70,7 @@ async generateToken(tokenData: { payload: any; role: string }): Promise<string> 
 
 
 
-  async verifyToken(token: string): Promise<any> {
+  async validateToken(token: string): Promise<any> {
     try {
       return this.jwtService.verify(token);
     } catch (error) {
@@ -78,4 +78,7 @@ async generateToken(tokenData: { payload: any; role: string }): Promise<string> 
     }
   }
 
+  async validateToken2( token : string , token1 : string ){
+    return
+  }
 }
