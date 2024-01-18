@@ -121,6 +121,8 @@ export class ReviewSeanceRepository extends Repository<ReviewSeance> {
       throw new BadRequestException('Failed to delete Review');
     }
   }*/
+  //test     hhhhhhh
+
   async deleteReview(reviewId: number, idEtudiant: number) {
     const review = await this.findOne({
       where: { id: reviewId, etudiant: { id: idEtudiant } },

@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import {
   Body,
   Controller,
@@ -5,25 +6,27 @@ import {
   Post,
   ValidationPipe,
   Delete,
-  UseGuards,
+  UseGuards,Req,
 } from '@nestjs/common';
 import { SeanceService } from './seance.service';
 import { CreateSeanceDto } from './dto/createseance.dto';
 import { ModifySeanceDto } from './dto/modifyseance.dto';
 import { JwtAuthGuard } from 'src/jwt/jwt-auth.guard';
+import { RolesGuard } from 'src/jwt/roles.guard';
+import { Roles } from 'src/Roles/roles.decorator';
 
 @Controller('seance')
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard,RolesGuard)
 
 export class SeanceController {
   constructor(private readonly seanceService: SeanceService) {}
-
-  @Post('create/:id/:id_salle')
+  @Roles('prof')
+  @Post('create/:id_salle')
   async createSeance(
     @Body(ValidationPipe) createSeanceDto: CreateSeanceDto,
-    @Param('id') profId: number,
+    @Req() req ,
     @Param('id_salle') salleId: number,
-  ) {
+  ) { const profId = req.user.payload.id
     return await this.seanceService.createSeance(
       createSeanceDto,
       profId,

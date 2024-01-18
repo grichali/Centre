@@ -1,10 +1,11 @@
+/* eslint-disable prettier/prettier */
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
 import { Salle } from './salle.entity';
 import { CreateSalleDto } from './dto/createsalle.dto';
 import { CentreRepository } from 'src/centre/centre.repository';
 import { ModifySalleDto } from './dto/modifysalle.dto';
-
+//test     hhhhhhh
 @Injectable()
 export class SalleRepository extends Repository<Salle> {
   constructor(
@@ -92,65 +93,65 @@ export class SalleRepository extends Repository<Salle> {
         where: { id: centreId },
         relations: ['salles'],
       });
-  
+
       if (!centre) {
         throw new Error(`Centre with ID ${centreId} not found`);
       }
-  
+
       return centre.salles;
     } catch (error) {
       console.error('Error getting centre salles:', error);
       throw new Error('Failed to get centre salles');
     }
   }
-  
-  
 
-  
+
+
+
   async getAvailableTimeSlots(salleId: number, date: any): Promise<string[]> {
     const dateString = typeof date === 'string' ? date : date.date;
     const salle = await this.findOne({
       where: { id: salleId },
       relations: ['seances'],
     });
-  
+
     if (!salle) {
       throw new BadRequestException('Salle not found');
     }
-  
+
     const startTime = 8;
     const endTime = 22;
-  
+
     const allTimeSlots: string[] = [];
-  
+
     for (let i = startTime; i < endTime; i++) {
       const formattedStartTime = `${i.toString().padStart(2, '0')}:00`;
       const formattedEndTime = `${(i + 1).toString().padStart(2, '0')}:00`;
       allTimeSlots.push(`${formattedStartTime} - ${formattedEndTime}`);
     }
-  
+
     const seancesOnDate = salle.seances.filter(
       (seance) => seance.date === dateString,
     );
-  
+
     const occupiedTimeSlots: Set<string> = new Set();
-  
+
     seancesOnDate.forEach((seance) => {
       const seanceTimeStart = new Date(`${dateString}T${seance.time}`).getHours();
       const seanceTimeEnd = seanceTimeStart + seance.duration;
-  
+
       for (let i = seanceTimeStart; i < seanceTimeEnd; i++) {
         const formattedStartTime = `${i.toString().padStart(2, '0')}:00`;
         const formattedEndTime = `${(i + 1).toString().padStart(2, '0')}:00`;
         occupiedTimeSlots.add(`${formattedStartTime} - ${formattedEndTime}`);
       }
     });
-  
+
     const availableTimeSlots = allTimeSlots.filter((timeSlot) => !occupiedTimeSlots.has(timeSlot));
-  
+
     return availableTimeSlots;
   }
-  
-  
-  
+
+
+
 }

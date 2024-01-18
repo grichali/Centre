@@ -1,14 +1,12 @@
 /* eslint-disable prettier/prettier */
-import { DataSource, EntityRepository, Repository, getRepository } from "typeorm";
+import { DataSource, Repository,  } from "typeorm";
 import { Centre } from "./centre.entity";
 import { CreatCentreDto } from "./dto/create-centre.dto";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from "@nestjs/common";
 import { LogInDTO } from "src/auth/dto/login.dto";
 import * as bcrypt from 'bcrypt';
-import { request } from "http";
-import { error } from "console";
-import { SalleRepository } from "src/salle/salle.repository";
+
 
 @Injectable()
 export class CentreRepository extends Repository<Centre>{
@@ -17,7 +15,6 @@ export class CentreRepository extends Repository<Centre>{
     /*private readonly salleRepository? : SalleRepository*/) {
     super(Centre, dataSource.createEntityManager());
   }
-
   async signUP(createCentretDto: CreatCentreDto) {
     const { nom, prenom, tel, email, password, adresse, description } = createCentretDto;
     const centre = new Centre();

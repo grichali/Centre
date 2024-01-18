@@ -18,6 +18,7 @@ export class ReviewSeanceService {
 
 
   }
+  //test     hhhhhhh
   async modifyReview(reviewId: number,idEtudiant: number, modifyReviewDto: ModifyReviewDto) {
     return await this.reviewSeanceRepository.modifyReview(reviewId,idEtudiant, modifyReviewDto);
   }
