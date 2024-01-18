@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { BadRequestException, Injectable, Optional } from "@nestjs/common";
 import { DataSource, Repository } from "typeorm";
 import { SeanceReserv } from "./seance_reserv.entity";
@@ -23,7 +24,7 @@ export class SeanceResevRepository extends Repository<SeanceReserv>{
       }
 
 
-      
+
   async createReservation(etudiantId: number, seanceId: number) {
     const seance = await this.seanceRepository.findOneOrFail({
       where: { id: seanceId },
@@ -59,7 +60,7 @@ export class SeanceResevRepository extends Repository<SeanceReserv>{
     try {
       const reservations = await this.find({
         where: { etudiant: { id: etudiantId } },
-        relations: ['etudiant', 'seance'], 
+        relations: ['etudiant', 'seance'],
       });
       console.log(reservations);
       return reservations;

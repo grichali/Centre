@@ -1,5 +1,6 @@
+/* eslint-disable prettier/prettier */
 // typeorm.config.ts
-import * as path from 'path';
+//import * as path from 'path';
 
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { Centre } from 'src/Centre/centre.entity';

@@ -9,9 +9,11 @@ import { InjectRepository } from "@nestjs/typeorm";
 
 
 
+
 @Injectable()
 
 export class FormationReservRepository extends Repository<FormationReserv>{
+
 
   constructor(
     private dataSource: DataSource,
@@ -20,6 +22,7 @@ export class FormationReservRepository extends Repository<FormationReserv>{
   ) {
     super(FormationReserv, dataSource.createEntityManager());
   }
+
 
 
   async createReservation(etudiantId: number, formationId: number) {
@@ -74,7 +77,11 @@ export class FormationReservRepository extends Repository<FormationReserv>{
       const etudiant1 = await this.etudiantRepository.findOne({
         where: { id: etudiantId },
       });
+      });
       const reservations = await this.find({
+        where: { etudiant: { id: etudiantId } },
+        relations: ['etudiant', 'formation'],
+      });
         where: { etudiant: { id: etudiant1.id } },
         relations : ['formation','formation.prof' ,'formation.seance']
       });;

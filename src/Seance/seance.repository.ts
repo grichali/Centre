@@ -1,8 +1,11 @@
+/* eslint-disable prettier/prettier */
 import { LessThan, Repository } from 'typeorm';
 import { Seance } from './seance.entity';
 import { BadRequestException, Injectable, Optional } from '@nestjs/common';
 import { DataSource } from 'typeorm';
+import { ProfRepository } from 'src/Prof/prof.repository';
 import { CreateSeanceDto } from './dto/createseance.dto';
+import { SalleRepository } from 'src/salle/salle.repository';
 import { ModifySeanceDto } from './dto/modifyseance.dto';
 import { FormationRepository } from 'src/formation/formation.repository';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -13,18 +16,18 @@ import { Formation } from 'src/Formation/formation.entity';
 @Injectable()
 export class SeanceRepository extends Repository<Seance> {
   constructor(
-   private dataSource: DataSource,
+    private dataSource: DataSource,
   ) {
     super(Seance, dataSource.createEntityManager());
   }
-  
+
   async createSeance(
     createSeanceDto: CreateSeanceDto,
     ProfId: number,
     SalleId: number,
   ): Promise<Seance> {
     const {
-      titre, 
+      titre,
       date,
       time,
       duration,
@@ -83,9 +86,11 @@ export class SeanceRepository extends Repository<Seance> {
     time: string,
     duration: number,
   ): Promise<boolean> {
+    // Calculate the end time based on the provided time and duration
     const endTime = new Date(`${date}T${time}`);
     endTime.setHours(endTime.getHours() + duration);
 
+    // Check if there is any existing seance for the salle during the specified time range
     const existingSeance = await this.findOne({
       where: {
         salle: { id: salleId },
@@ -94,6 +99,7 @@ export class SeanceRepository extends Repository<Seance> {
       },
     });
 
+    // If there is an existing seance during the specified time range, salle is not available
     return !existingSeance;
   }
 
@@ -153,7 +159,7 @@ export class SeanceRepository extends Repository<Seance> {
   }
 
   async integreFormation(
-    seanceId: number, 
+    seanceId: number,
     formationId: number,
   ): Promise<Seance> {
     const seance = await this.findOne({

@@ -17,7 +17,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
 
     const request = context.switchToHttp().getRequest();
     const token = this.extractTokenFromRequest(request);
-    
+
 
     if (!token) {
       console.log('JwtAuthGuard - No token found');
