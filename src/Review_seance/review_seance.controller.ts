@@ -1,9 +1,12 @@
-import { Body, Controller, Delete, Param, Post, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Param, Post, UseGuards, ValidationPipe } from '@nestjs/common';
 import { ReviewSeanceService } from './review_seance.service';
 import { CreateReviewDto } from 'src/review/dto/createReview.dto';
 import { ModifyReviewDto } from 'src/review/dto/modifyReview.dto';
+import { JwtAuthGuard } from 'src/jwt/jwt-auth.guard';
 
 @Controller('review-seance')
+@UseGuards(JwtAuthGuard)
+
 export class ReviewSeanceController {
     constructor(private readonly reviewSeanceService: ReviewSeanceService) {}
 

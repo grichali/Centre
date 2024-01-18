@@ -14,8 +14,10 @@ import { CentreRepository } from 'src/centre/centre.repository';
 import { AdminRepository } from 'src/admin/admin.repository';
 import { AdminService } from 'src/admin/admin.service';
 import { JwtModule } from 'src/jwt/jwt.module';
+import { PassportModule } from '@nestjs/passport';
+import { JwtStrategy } from 'src/jwt/jwt.strategy';
 
-@Module({imports: [JwtModule]
+@Module({imports: [JwtModule,PassportModule]
   ,
   controllers: [AuthController],
   providers: [
@@ -28,7 +30,9 @@ import { JwtModule } from 'src/jwt/jwt.module';
     EtudiantRepository,
     CentreRepository,
     AdminRepository,
-    JwtModule
+    JwtModule,
+    
+    JwtStrategy
   ],
 })
 export class AuthModule {}

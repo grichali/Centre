@@ -3,8 +3,7 @@ import { FormationReservService } from './formation_reserv.service';
 import { JwtAuthGuard } from 'src/jwt/jwt-auth.guard';
 
 @Controller('formation-reserv') 
-
-@UseGuards(JwtAuthGuard) 
+@UseGuards(JwtAuthGuard)
 export class FormationReservController {
 
 

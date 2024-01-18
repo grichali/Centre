@@ -5,12 +5,19 @@ import {
   Get,
   Param,
   Post,
+  UseGuards,
   ValidationPipe,
 } from '@nestjs/common';
 import { ReviewService } from './review.service';
 import { CreateReviewDto } from './dto/createreview.dto';
 import { ModifyReviewDto } from './dto/modifyreview.dto';
+import { JwtAuthGuard } from 'src/jwt/jwt-auth.guard';
+
+
+
 @Controller('review_formation')
+@UseGuards(JwtAuthGuard)
+
 export class ReviewController {
   constructor(private readonly reviewService: ReviewService) {}
 

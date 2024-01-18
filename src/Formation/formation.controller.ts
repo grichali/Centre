@@ -5,14 +5,17 @@ import {
   Get,
   Param,
   Post,
+  UseGuards,
   ValidationPipe,
 } from '@nestjs/common';
 import { FormationService } from './formation.service';
 import { CreateFormationDto } from './dto/createformation.dto';
 import { ModifyFormationDto } from './dto/modifyformation.dto';
-import { get } from 'http';
+import { JwtAuthGuard } from 'src/jwt/jwt-auth.guard';
 
 @Controller('formation')
+@UseGuards(JwtAuthGuard)
+
 export class FormationController {
   constructor(private readonly formationService: FormationService) {}
 

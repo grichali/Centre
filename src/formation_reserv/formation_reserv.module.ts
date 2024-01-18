@@ -11,7 +11,7 @@ import { ConfigModule } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
  
 @Module({
-  imports:[TypeOrmModule.forFeature([FormationReserv]),ConfigModule.forRoot(),JwtModule],
+  imports:[TypeOrmModule.forFeature([FormationReserv]),ConfigModule.forRoot()],
   providers: [FormationReservService,
     FormationReservRepository,
     EtudiantRepository,

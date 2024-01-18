@@ -5,12 +5,16 @@ import {
   Post,
   ValidationPipe,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { SeanceService } from './seance.service';
 import { CreateSeanceDto } from './dto/createseance.dto';
 import { ModifySeanceDto } from './dto/modifyseance.dto';
+import { JwtAuthGuard } from 'src/jwt/jwt-auth.guard';
 
 @Controller('seance')
+@UseGuards(JwtAuthGuard)
+
 export class SeanceController {
   constructor(private readonly seanceService: SeanceService) {}
 
