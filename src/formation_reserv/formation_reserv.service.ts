@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { FormationReservRepository } from './formation_reserv.repository';
 
@@ -7,9 +8,9 @@ export class FormationReservService {
     constructor(
         private readonly formationReservRepository: FormationReservRepository,
       ) {}
-     
+
       async createReservation(etudiantId: number, formationId: number) {
-    
+
         try {
           return await this.formationReservRepository.createReservation(etudiantId, formationId);
         } catch (error) {
@@ -22,7 +23,7 @@ export class FormationReservService {
         return await this.formationReservRepository.getEtudiantReservations(etudiantId);
       }
 
-      async deleteReservation(resId:number){
-        return await this.formationReservRepository.deleteReservation(resId);
+      async deleteReservation(etudiantId: number, resId: number){
+        return await this.formationReservRepository.deleteReservation(etudiantId,resId);
       }
-} 
+}

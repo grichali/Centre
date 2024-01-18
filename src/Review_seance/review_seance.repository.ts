@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { BadRequestException, Injectable } from "@nestjs/common";
 import { DataSource, Repository } from "typeorm";
 import { ReviewSeance } from "./review_seance.entity";
@@ -8,7 +9,7 @@ import { ModifyReviewDto } from "src/review/dto/modifyReview.dto";
 
 @Injectable()
 export class ReviewSeanceRepository extends Repository<ReviewSeance> {
-  
+
   constructor(
     dataSource: DataSource,
     private readonly etudiantRepository: EtudiantRepository,
@@ -67,15 +68,16 @@ export class ReviewSeanceRepository extends Repository<ReviewSeance> {
 
   async modifyReview(
     ReviewId: number,
+    idEtudiant: number,
     modifyReviewDto: ModifyReviewDto,
   ): Promise<ReviewSeance> {
     const review = await this.findOne({
-      where: { id: ReviewId },
+      where: { id: ReviewId, etudiant: { id: idEtudiant } },
       relations: ['seance', 'etudiant'],
     });
 
     if (!review) {
-      throw new BadRequestException('Review not found');
+      throw new BadRequestException('Review not found for the specified student');
     }
 
     if (modifyReviewDto.centreRating !== undefined) {
@@ -104,7 +106,7 @@ export class ReviewSeanceRepository extends Repository<ReviewSeance> {
   }
 
 
-  async deleteReview(reviewId: number) {
+  /*async deleteReview(reviewId: number) {
     const review = await this.findOne({
       where: { id: reviewId },
     });
@@ -118,5 +120,22 @@ export class ReviewSeanceRepository extends Repository<ReviewSeance> {
       console.error('Error deleting Review:', error);
       throw new BadRequestException('Failed to delete Review');
     }
+  }*/
+  async deleteReview(reviewId: number, idEtudiant: number) {
+    const review = await this.findOne({
+      where: { id: reviewId, etudiant: { id: idEtudiant } },
+    });
+
+    if (!review) {
+      throw new BadRequestException('Review not found for the specified student!');
+    }
+
+    try {
+      await this.remove(review);
+    } catch (error) {
+      console.error('Error deleting Review:', error);
+      throw new BadRequestException('Failed to delete Review');
+    }
   }
+
 }

@@ -1,4 +1,5 @@
-import { BadRequestException, Injectable } from "@nestjs/common";
+/* eslint-disable prettier/prettier */
+import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import { FormationReserv } from "./formation_reserv.entity";
 import { DataSource, Repository } from "typeorm";
 import { EtudiantRepository } from "src/etudiant/etudiant.repository";
@@ -6,12 +7,12 @@ import { FormationRepository } from "src/formation/formation.repository";
 import { Formation } from "src/Formation/formation.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 
- 
+
 
 @Injectable()
 
 export class FormationReservRepository extends Repository<FormationReserv>{
- 
+
   constructor(
     private dataSource: DataSource,
     private readonly etudiantRepository: EtudiantRepository,
@@ -20,7 +21,7 @@ export class FormationReservRepository extends Repository<FormationReserv>{
     super(FormationReserv, dataSource.createEntityManager());
   }
 
-      
+
   async createReservation(etudiantId: number, formationId: number) {
     const FormationRepository = await this.dataSource.getRepository(Formation);
     const formation = await FormationRepository.findOneOrFail({
@@ -42,13 +43,27 @@ export class FormationReservRepository extends Repository<FormationReserv>{
     }
   }
 
-  async deleteReservation(resId : number){
-    try{
-      await this.delete(resId);
-      return "reservation has been deleted succesfully";
-    }catch(error){
-      throw new BadRequestException('Failed to delete reservation');
+  async deleteReservation(etudiantId: number, resId: number): Promise<string> {
+    try {
+      const etudiant = await this.etudiantRepository.findOne({
+        where: { id: etudiantId },
+      });
 
+      if (!etudiant) {
+        throw new NotFoundException('Etudiant not found');
+      }
+      const reservationToDelete = etudiant.reservations.find(
+        (reservation) => reservation.id === resId
+      );
+
+      if (!reservationToDelete) {
+        throw new NotFoundException('Reservation not found for the given Etudiant');
+      }
+      await this.delete(resId);
+
+      return 'Reservation has been deleted successfully';
+    } catch (error) {
+      throw new BadRequestException('Failed to delete reservation', error);
     }
   }
 
@@ -58,7 +73,7 @@ export class FormationReservRepository extends Repository<FormationReserv>{
     try {
       const etudiant1 = await this.etudiantRepository.findOne({
         where: { id: etudiantId },
-      });      
+      });
       const reservations = await this.find({
         where: { etudiant: { id: etudiant1.id } },
         relations : ['formation','formation.prof' ,'formation.seance']

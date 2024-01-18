@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Injectable } from '@nestjs/common';
 import { ReviewRepository } from './review.repository';
 import { CreateReviewDto } from './dto/createReview.dto';
@@ -16,12 +17,11 @@ export class ReviewService {
 
 
   }
-  async modifyReview(reviewId: number, modifyReviewDto: ModifyReviewDto) {
-    return await this.reviewRepository.modifyReview(reviewId, modifyReviewDto);
+  async modifyReview(reviewId: number,  idEtudiant: number,modifyReviewDto: ModifyReviewDto) {
+    return await this.reviewRepository.modifyReview(reviewId, idEtudiant,modifyReviewDto);
   }
 
-  async deleteReview(reviewId: number) {
-    return await this.reviewRepository.deleteReview(reviewId);
+  async deleteReview(reviewId: number, idEtudiant: number) {
+    return await this.reviewRepository.deleteReview(reviewId,idEtudiant);
   }
 }
- 
