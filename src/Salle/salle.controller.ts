@@ -1,4 +1,4 @@
-  /* eslint-disable prettier/prettier */
+/* eslint-disable prettier/prettier */
   import {
     Body,
     Controller,
@@ -38,19 +38,22 @@
       }
     }
     @Roles('centre','admin')
-    @Post('modify')
+    @Post('modify/:id')
     async modifySalleDto(
 
       @Body(ValidationPipe) modifySalleDto: ModifySalleDto,
       @Req() req,
-    ) {const salleId = req.user.payload.id
-      return await this.salleService.modifySalle(salleId, modifySalleDto);
+      @Param('/id')salleId : number
+    ) {const centreId = req.user.payload.id
+      console.log("yarbi")
+      return await this.salleService.modifySalle(salleId,centreId, modifySalleDto);
     }
     @Roles('centre','admin')
-    @Delete('delete')
+    @Delete('delete/:id')
     async deleteSalle(
-      @Param('id') salleId: number): Promise<void> {
-      await this.salleService.deleteSalle(salleId);
+      @Param('id') salleId: number, @Req() req,): Promise<void> {
+        const centreId = req.user.payload.id
+      await this.salleService.deleteSalle(salleId,centreId);
     }
     @Roles('centre','admin','prof')
     @Get('getall/:id')

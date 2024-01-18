@@ -7,15 +7,14 @@ import { EtudiantRepository } from "src/etudiant/etudiant.repository";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Seance } from "src/Seance/seance.entity";
 import { SeanceRepository } from "src/seance/seance.repository";
+import { Etudiant } from "src/Etudiant/etudiant.entity";
 
 @Injectable()
 
 export class SeanceResevRepository extends Repository<SeanceReserv>{
     constructor(
-        dataSource: DataSource,
-        @Optional()
-        @InjectRepository(Seance)
-        private readonly seanceRepository : SeanceRepository,
+        private dataSource: DataSource,
+
         @Optional()
         @InjectRepository(EtudiantRepository)
         private readonly etudiantRepository : EtudiantRepository,
@@ -26,10 +25,13 @@ export class SeanceResevRepository extends Repository<SeanceReserv>{
 
 
   async createReservation(etudiantId: number, seanceId: number) {
-    const seance = await this.seanceRepository.findOneOrFail({
+    const SeanceRepository = await this.dataSource.getRepository(Seance)
+
+    const seance = await SeanceRepository.findOneOrFail({
       where: { id: seanceId },
     });
-    const etudiant = await this.etudiantRepository.findOneOrFail({
+    const EtudiantRepository = await this.dataSource.getRepository(Etudiant)
+    const etudiant = await EtudiantRepository.findOneOrFail({
       where: { id: etudiantId },
     });
 
@@ -45,14 +47,32 @@ export class SeanceResevRepository extends Repository<SeanceReserv>{
     }
   }
 
-  async deleteReservation(resId : number){
+ /* async deleteReservation(resId : number,etudiantId : number){
     try{
       await this.delete(resId);
       return "reservation has been deleted succesfully";
     }catch(error){
       throw new BadRequestException('Failed to delete reservation');
     }
+  }*/
+  async deleteReservation(resId: number, etudiantId: number) {
+    const reservation = await this.findOne({
+      where: { id: resId, etudiant: { id: etudiantId } },
+    });
+
+    if (!reservation) {
+      throw new BadRequestException('Reservation not found for the specified student');
+    }
+
+    try {
+      await this.remove(reservation);
+      return "Reservation has been deleted successfully";
+    } catch (error) {
+      console.error('Error deleting reservation:', error);
+      throw new BadRequestException('Failed to delete reservation');
+    }
   }
+
 
 
 

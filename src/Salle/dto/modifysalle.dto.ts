@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import {
   IsOptional,
   IsNotEmpty,
@@ -22,5 +23,5 @@ export class ModifySalleDto {
   prixHeure?: number;
 
   @IsString()
-  description : String ;
+  description?: string ;
 }

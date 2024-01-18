@@ -6,6 +6,7 @@ import { EtudiantRepository } from "src/etudiant/etudiant.repository";
 import { FormationRepository } from "src/formation/formation.repository";
 import { Formation } from "src/Formation/formation.entity";
 import { InjectRepository } from "@nestjs/typeorm";
+import { SeanceReserv } from "src/seance_reserv/seance_reserv.entity";
 
 
 
@@ -29,6 +30,7 @@ export class FormationReservRepository extends Repository<FormationReserv>{
     const FormationRepository = await this.dataSource.getRepository(Formation);
     const formation = await FormationRepository.findOneOrFail({
       where: { id: formationId },
+      relations: ['seance'], 
     });
     const etudiant = await this.etudiantRepository.findOneOrFail({
       where: { id: etudiantId },
@@ -39,12 +41,27 @@ export class FormationReservRepository extends Repository<FormationReserv>{
       reservation.formation = formation;
       reservation.etudiant = etudiant;
 
-      return await this.save(reservation);
+      const savedReservation = await this.save(reservation);
+
+      if (formation.seance && formation.seance.length > 0) {
+        const seanceReservations = formation.seance.map(seance => {
+          const seanceReserv = new SeanceReserv();
+          seanceReserv.etudiant = etudiant;
+          seanceReserv.seance = seance;
+          return seanceReserv;
+        });
+
+        const seanceReservRepository = await this.dataSource.getRepository(SeanceReserv)
+        await seanceReservRepository.save(seanceReservations);
+      }
+
+      return savedReservation;
     } catch (error) {
       console.error('Error creating reservation:', error);
       throw new BadRequestException('Failed to create reservation');
     }
   }
+
 
   async deleteReservation(etudiantId: number, resId: number): Promise<string> {
     try {
@@ -77,11 +94,7 @@ export class FormationReservRepository extends Repository<FormationReserv>{
       const etudiant1 = await this.etudiantRepository.findOne({
         where: { id: etudiantId },
       });
-      });
       const reservations = await this.find({
-        where: { etudiant: { id: etudiantId } },
-        relations: ['etudiant', 'formation'],
-      });
         where: { etudiant: { id: etudiant1.id } },
         relations : ['formation','formation.prof' ,'formation.seance']
       });;
@@ -90,6 +103,7 @@ export class FormationReservRepository extends Repository<FormationReserv>{
     } catch (error) {
       console.error('Error getting reservations:', error);
       throw new Error('Failed to get reservations');
-    }
-  }
+    }
+  }
+
 }

@@ -7,9 +7,9 @@ export class SeanceReservService {
     constructor(
         private readonly seanceResevRepository: SeanceResevRepository,
       ) {}
-     
+
       async createReservation(etudiantId: number, seanceId: number) {
-    
+
         try {
           return await this.seanceResevRepository.createReservation(etudiantId, seanceId);
         } catch (error) {
@@ -22,8 +22,8 @@ export class SeanceReservService {
         return await this.seanceResevRepository.getEtudiantReservations(etudiantId);
       }
 
-      async deleteReservation(resId:number){
-        return await this.seanceResevRepository.deleteReservation(resId);
+      async deleteReservation(resId:number, etudiantId: number){
+        return await this.seanceResevRepository.deleteReservation(resId,etudiantId);
       }
 
 }

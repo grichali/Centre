@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Injectable } from '@nestjs/common';
 import { FormationRepository } from './formation.repository';
 import { CreateFormationDto } from './dto/createformation.dto';
@@ -13,19 +14,21 @@ export class FormationService {
       id,
     );
   }
-  
+
   async modifyFormation(
     formationId: number,
+    profId: number,
     modifyFormationDto: ModifyFormationDto,
   ) {
     return await this.formationRepository.modifyFormation(
       formationId,
+      profId,
       modifyFormationDto,
     );
   }
 
-  async deleteFormation(formationId: number) {
-    return await this.formationRepository.deleteFormation(formationId);
+  async deleteFormation(formationId: number,profId:number) {
+    return await this.formationRepository.deleteFormation(formationId,profId);
   }
 
   async getFormation(formationId: number){

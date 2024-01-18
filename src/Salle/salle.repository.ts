@@ -46,13 +46,21 @@ export class SalleRepository extends Repository<Salle> {
 
   async modifySalle(
     salleId: number,
+    centreId: number,
     modifySalleDto: ModifySalleDto,
   ): Promise<Salle> {
+    const centre = await this.centreRepository.findOne({  where: { id:centreId }, });
+    if (!centre) {
+      throw new BadRequestException('Centre not found');
+    }
+
     const salle = await this.findOneOrFail({
       where: { id: salleId },
       relations: ['centre', 'seances'],
     });
-
+    if (salle.centre.id !== centreId) {
+      throw new BadRequestException('Salle does not belong to the specified Centre');
+    }
     if (modifySalleDto.nombrePlace !== undefined) {
       salle.nombrePlace = modifySalleDto.nombrePlace;
     }
@@ -60,9 +68,11 @@ export class SalleRepository extends Repository<Salle> {
     if (modifySalleDto.prixHeure !== undefined) {
       salle.prixHeure = modifySalleDto.prixHeure;
     }
+    if (modifySalleDto.description !== undefined) {
+      salle.description = modifySalleDto.description;
+    }
 
     try {
-      // Save the modified salle to the database
       await this.save(salle);
       return salle;
     } catch (error) {
@@ -71,14 +81,25 @@ export class SalleRepository extends Repository<Salle> {
     }
   }
 
-  async deleteSalle(salleId: number) {
+  async deleteSalle(salleId: number, centreId: number) {
+    const id = centreId;
+    const centre = await this.centreRepository.findOne({where: { id }, });
+    if (!centre) {
+      throw new BadRequestException('Centre not found');
+    }
+
+
     const salle = await this.findOne({
       where: { id: salleId },
     });
 
     if (!salle) {
-      throw new BadRequestException('salle not found !');
+      throw new BadRequestException('Salle not found');
     }
+    if (salle.centre.id !== centreId) {
+      throw new BadRequestException('Salle does not belong to the specified Centre');
+    }
+
     try {
       await this.remove(salle);
     } catch (error) {

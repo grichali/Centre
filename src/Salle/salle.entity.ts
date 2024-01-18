@@ -1,30 +1,31 @@
-import { Centre } from 'src/Centre/centre.entity';
-import { Seance } from 'src/Seance/seance.entity';
-import {
-  Column,
-  Entity,
-  ManyToOne,
-  OneToMany,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+  /* eslint-disable prettier/prettier */
+  import { Centre } from 'src/Centre/centre.entity';
+  import { Seance } from 'src/Seance/seance.entity';
+  import {
+    Column,
+    Entity,
+    ManyToOne,
+    OneToMany,
+    PrimaryGeneratedColumn,
+  } from 'typeorm';
 
-@Entity()
-export class Salle {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @Entity()
+  export class Salle {
+    @PrimaryGeneratedColumn()
+    id: number;
 
-  @Column()
-  nombrePlace: number;
+    @Column()
+    nombrePlace: number;
 
-  @Column()
-  prixHeure: number;
+    @Column()
+    prixHeure: number;
 
-  @Column()
-  description : string ;
+    @Column()
+    description : string ;
 
-  @ManyToOne(() => Centre, (centre) => centre.salles)
-  centre: Centre;
+    @ManyToOne(() => Centre, (centre) => centre.salles)
+    centre: Centre;
 
-  @OneToMany(() => Seance, (seance) => seance.salle)
-  seances: Seance[];
-} 
+    @OneToMany(() => Seance, (seance) => seance.salle)
+    seances: Seance[];
+  }

@@ -106,11 +106,23 @@ export class SeanceRepository extends Repository<Seance> {
   async modifySeance(
     seanceId: number,
     modifySeanceDto: ModifySeanceDto,
+    profId: number,
   ): Promise<Seance> {
+    const ProfRepository = await this.dataSource.getRepository(Prof)
+    const prof = await ProfRepository.findOne({where : {id:profId},})
     const seance = await this.findOneOrFail({
       where: { id: seanceId },
-      relations: ['prof', 'formation', 'salle'],
+      relations: ['prof', 'salle'],
     });
+    if (!seance) {
+      throw new BadRequestException('Seance not found !');
+    }
+    if (!prof) {
+      throw new BadRequestException('Prof not found');
+    }
+    if (seance.prof.id !== profId) {
+      throw new BadRequestException('Seance does not belong to the specified Prof');
+    }
 
     if (modifySeanceDto.titre !== undefined) {
       seance.titre = modifySeanceDto.titre;
@@ -143,11 +155,19 @@ export class SeanceRepository extends Repository<Seance> {
     }
   }
 
-  async deleteSeance(seanceId: number) {
+  async deleteSeance(seanceId: number,profId: number) {
+    const ProfRepository = await this.dataSource.getRepository(Prof)
+    const prof = await ProfRepository.findOne({where : {id:profId},})
     const seance = await this.findOne({ where: { id: seanceId } });
 
     if (!seance) {
       throw new BadRequestException('Seance not found !');
+    }
+    if (!prof) {
+      throw new BadRequestException('Prof not found');
+    }
+    if (seance.prof.id !== profId) {
+      throw new BadRequestException('Seance does not belong to the specified Prof');
     }
 
     try {
@@ -161,12 +181,16 @@ export class SeanceRepository extends Repository<Seance> {
   async integreFormation(
     seanceId: number,
     formationId: number,
+    profId: number,
   ): Promise<Seance> {
+
     const seance = await this.findOne({
       where: { id: seanceId },
       relations: ['prof', 'formation', 'salle'],
     });
-    const formationRepository = await this.dataSource.getRepository('Formation') ;
+    const ProfRepository = await this.dataSource.getRepository(Prof)
+    const prof = await ProfRepository.findOne({where : {id:profId},})
+    const formationRepository = await this.dataSource.getRepository(Formation) ;
     const formation = await formationRepository.findOne({
       where: { id: formationId },
       relations: ['prof', 'seance'],
@@ -178,6 +202,15 @@ export class SeanceRepository extends Repository<Seance> {
 
     if (!formation) {
       throw new BadRequestException('Formation not found');
+    }
+    if (!prof) {
+      throw new BadRequestException('Prof not found');
+    }
+    if (formation.prof.id !== profId) {
+      throw new BadRequestException('Formation does not belong to the specified Prof');
+    }
+    if (seance.prof.id !== profId) {
+      throw new BadRequestException('Seance does not belong to the specified Prof');
     }
 
     try {

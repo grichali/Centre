@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { BadRequestException, Injectable, Optional } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
 import { Formation } from './formation.entity';
@@ -12,13 +13,8 @@ import { Prof } from 'src/Prof/prof.entity';
 @Injectable()
 export class FormationRepository extends Repository<Formation> {
   constructor(
-    dataSource: DataSource,
-    @Optional()
-    @InjectRepository(Prof)
-    private readonly profRepository: ProfRepository,
-    @Optional()
-    @InjectRepository(Seance)
-    private readonly seanceRepository?: SeanceRepository,
+    private dataSource: DataSource,
+
   ) {
     super(Formation, dataSource.createEntityManager());
   }
@@ -46,7 +42,7 @@ export class FormationRepository extends Repository<Formation> {
   async getFormation(formationId: number): Promise<Formation> {
     const formation = await this.findOne({
       where: { id: formationId },
-      relations: ['prof', 'seance', 'reviews'], // Include relations
+      relations: ['prof', 'seance', 'reviews'],
     });
 
     if (!formation) {
@@ -63,7 +59,8 @@ export class FormationRepository extends Repository<Formation> {
     const { Type, prix, description } = createFormationDto;
 
     const id = profId;
-    const prof = await this.profRepository.findOne({
+    const ProfRepository = await this.dataSource.getRepository(Prof);
+    const prof = await ProfRepository.findOne({
       where: { id },
     });
     if (!prof) {
@@ -85,8 +82,17 @@ export class FormationRepository extends Repository<Formation> {
   }
   async modifyFormation(
     FormationId: number,
+    profId: number,
     modifyFormationDto: ModifyFormationDto,
   ): Promise<Formation> {
+    const id = profId;
+    const ProfRepository = await this.dataSource.getRepository(Prof);
+    const prof = await ProfRepository.findOne({
+      where: { id },
+    });
+    if (!prof) {
+      throw new BadRequestException('Prof not found');
+    }
     const formation = await this.findOne({
       where: { id: FormationId },
       relations: ['prof', 'seance', 'reviews'],
@@ -94,6 +100,9 @@ export class FormationRepository extends Repository<Formation> {
 
     if (!formation) {
       throw new BadRequestException('Formation not found');
+    }
+    if (formation.prof.id !== profId) {
+      throw new BadRequestException('Formation does not belong to the specified Prof');
     }
 
     if (modifyFormationDto.Type !== undefined) {
@@ -117,16 +126,19 @@ export class FormationRepository extends Repository<Formation> {
     }
   }
 
-  async deleteFormation(formationId: number) {
+  async deleteFormation(formationId: number,profId:number) {
     const formation = await this.findOne({
       where: { id: formationId },
-      relations: ['seance'],
+      relations: ['seance','prof'],
     });
-
+   /* if (formation.prof.id !== profId) {
+      throw new BadRequestException('Formation does not belong to the specified Prof');
+    }*/
+    const SeanceRepository = await this.dataSource.getRepository(Seance)
     if (formation.seance && formation.seance.length > 0) {
       await Promise.all(
         formation.seance.map(async (seance) => {
-          await this.seanceRepository.remove(seance); 
+          await SeanceRepository.remove(seance);
         }),
       );
     }

@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Injectable } from '@nestjs/common';
 import { SalleRepository } from './salle.repository';
 import { CreateSalleDto } from './dto/createsalle.dto';
@@ -11,12 +12,12 @@ export class SalleService {
     return await this.salleRepository.createSalle(createSalleDto, id);
   }
 
-  async modifySalle(salleId: number, modifySalleDto: ModifySalleDto) {
-    return await this.salleRepository.modifySalle(salleId, modifySalleDto);
+  async modifySalle(salleId: number,  centreId: number,modifySalleDto: ModifySalleDto) {
+    return await this.salleRepository.modifySalle(salleId,  centreId,modifySalleDto);
   }
 
-  async deleteSalle(salleId: number) {
-    return await this.salleRepository.deleteSalle(salleId);
+  async deleteSalle(salleId: number, centreId: number) {
+    return await this.salleRepository.deleteSalle(salleId,centreId);
   }
 
   async getCentreSalles(centreId : number ){

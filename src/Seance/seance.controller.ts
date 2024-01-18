@@ -33,24 +33,27 @@ export class SeanceController {
       salleId,
     );
   }
-
+  @Roles('prof')
   @Post('modify/:id')
   async modifySeanceDto(
     @Param('id') seanceId: number,
-    @Body(ValidationPipe) modifySeanceDto: ModifySeanceDto,
-  ) {
-    return await this.seanceService.modifySeance(seanceId, modifySeanceDto);
+    @Body(ValidationPipe) modifySeanceDto: ModifySeanceDto,@Req() req ,
+  ) {const profId = req.user.payload.id
+    return await this.seanceService.modifySeance(seanceId, modifySeanceDto,profId);
   }
-
+  @Roles('prof')
   @Delete('delete/:id')
-  async deleteFormation(@Param('id') seanceId: number): Promise<void> {
-    await this.seanceService.deleteSeance(seanceId);
+  async deleteFormation(@Param('id') seanceId: number,@Req() req ,): Promise<void> {
+    const profId = req.user.payload.id
+    await this.seanceService.deleteSeance(seanceId,profId);
   }
+  @Roles('prof')
   @Post('integre/:id/:id_formation')
   async integreFormation(
     @Param('id') seanceId: number,
     @Param('id_formation') formationId: number,
-  ) {
-    return await this.seanceService.integreFormation(seanceId, formationId);
+    @Req() req,
+  ) { const profId = req.user.payload.id
+    return await this.seanceService.integreFormation(seanceId, formationId,profId);
   }
 }

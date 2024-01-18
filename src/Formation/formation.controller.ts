@@ -39,16 +39,19 @@ export class FormationController {
   async modifyFormationDto(
     @Param('id') formationId: number,
     @Body(ValidationPipe) modifyFormationDto: ModifyFormationDto,
-  ) {
+    @Req() req,
+  ) { const profId = req.user.payload.id
     return await this.formationService.modifyFormation(
       formationId,
+      profId,
       modifyFormationDto,
     );
   }
   @Roles('prof','admin')
   @Delete('delete/:id')
-  async deleteFormation(@Param('id') formationId: number): Promise<void> {
-    await this.formationService.deleteFormation(formationId);
+  async deleteFormation(@Param('id') formationId: number,@Req() req,): Promise<void> {
+    const profId = req.user.payload.id
+    await this.formationService.deleteFormation(formationId,profId);
   }
   @Roles('prof','admin','etudiant')
   @Get('get/:id')

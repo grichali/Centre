@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Module } from '@nestjs/common';
 import { SeanceReservController } from './seance_reserv.controller';
 import { SeanceReservService } from './seance_reserv.service';
@@ -22,7 +23,7 @@ import { SeanceRepository } from 'src/seance/seance.repository';
     SeanceRepository,
     ProfRepository,
     FormationRepository,
-    
+
   ],
 })
 export class SeanceReservModule {}

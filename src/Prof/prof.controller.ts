@@ -1,7 +1,5 @@
 /* eslint-disable prettier/prettier */
 import { Controller, Get, Param, UseGuards } from '@nestjs/common';
-/* eslint-disable prettier/prettier */
-import { Controller, Get, Param, UseGuards } from '@nestjs/common';
 import { ProfService } from './prof.service';
 import { JwtAuthGuard } from 'src/jwt/jwt-auth.guard';
 import { RolesGuard } from 'src/jwt/roles.guard';

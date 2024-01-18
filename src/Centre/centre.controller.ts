@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-  import { Controller, Delete,Get,Param,UseGuards} from '@nestjs/common';
+  import { Controller, Delete,Get,Param,UseGuards, Req} from '@nestjs/common';
   import { CentreService } from './centre.service';
   import { JwtAuthGuard } from 'src/jwt/jwt-auth.guard';
 import { RolesGuard } from 'src/jwt/roles.guard';
@@ -11,10 +11,10 @@ import { Roles } from 'src/Roles/roles.decorator';
 
   export class CentreController {
     constructor(private readonly centreService: CentreService) {}
-    @Roles('centre','admin','prof')
-    @Get('getsalles/:id')
-    async getSalles(@Param('id') centreId: number,
-    ) {
+    @Roles('centre','admin')
+    @Get('getsalles')
+    async getSalles(@Req() req ,
+    ) { const centreId = req.user.payload.id
       return this.centreService.getSalles(centreId);
     }
     @Roles('centre','admin','prof')
@@ -23,8 +23,9 @@ import { Roles } from 'src/Roles/roles.decorator';
       return this.centreService.getCentre(centreId);
     }
     @Roles('centre')
-    @Delete('delete/:id')
-    async DeleteCentre(@Param('id') centreId: number): Promise<void> {
+    @Delete('delete')
+    async DeleteCentre(@Req() req ,): Promise<void> {
+      const  centreId = req.user.payload.id
       return this.centreService.DeleteCentre(centreId);
     }
   }
